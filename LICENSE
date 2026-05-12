@@ -1,0 +1,51 @@
+Hydrate — End-User Licence Agreement (placeholder)
+===================================================
+
+<!--
+TODO Seamus: drop in the canonical EULA text before the public flip.
+
+The public-repo distribution is the binary-only path; this LICENSE
+file should be the end-user licence governing the released binaries,
+NOT a source-code licence (Hydrate is proprietary; the source-code
+repo's MIT LICENSE does not apply here).
+
+Until the EULA lands, the placeholder text below states the
+operative principle so a visitor on the morning of the public flip
+isn't reading a blank file. Replace this entire file with the real
+EULA when ready.
+
+Source-of-truth: ask Seamus / legal review.
+-->
+
+Copyright (c) 2026 Seamus Waldron / Hydrate.
+
+The compiled binaries distributed via this repository are licensed,
+not sold. Use of the binaries is permitted on machines under your
+control for personal or commercial development, subject to the
+edition (Free / Pro / Team / Enterprise) you have activated.
+
+You may NOT:
+
+  - redistribute the binaries to third parties;
+  - reverse-engineer, decompile, or disassemble the binaries;
+  - circumvent licence-activation, telemetry, or rate-limit checks
+    built into the binaries;
+  - claim authorship of, or derive products from, the binaries.
+
+You MAY:
+
+  - install and run the binaries on your own machines;
+  - integrate Hydrate with first- and third-party tools via the
+    documented MCP, HTTP, and slash-command surfaces;
+  - share configuration files, slash-command templates, and pack
+    (`.hpack`) exports you have created.
+
+For commercial licensing, source access enquiries, or terms that
+fall outside the above, email `licences@gethydrate.dev`.
+
+THE BINARIES ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND
+NONINFRINGEMENT. THE FULL EULA SHIPPED INSIDE EACH RELEASE TARBALL
+IS THE AUTHORITATIVE TEXT; THIS FILE IS A SUMMARY FOR THE PUBLIC
+DISTRIBUTION REPO ONLY.
