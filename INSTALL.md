@@ -10,9 +10,29 @@ The canonical install page is
 snippets here match that page; if they ever drift, the website
 wins.
 
+The fastest path for any user is the **First-steps builder** at
+[gethydrate.dev/install/first-steps](https://gethydrate.dev/install/first-steps).
+Pick your settings in the form and it emits a single shell script
+that activates your license, initialises your project, optionally
+imports a hydration pack, optionally bootstraps a team-canon git
+repo, and runs `hydrate doctor` at the end.
+
 ## macOS
 
-### Recommended: the install script
+### Homebrew (recommended)
+
+```sh
+brew tap getHydrate/hydrate
+brew install hydrate
+hydrate setup           # interactive first-run wizard
+hydrate doctor          # 16-point health check
+```
+
+The tap pulls binaries from
+[hydrate-public Releases](https://github.com/getHydrate/hydrate-public/releases/latest);
+the formula handles arm64 vs amd64 automatically.
+
+### Alternative: the install script
 
 ```sh
 curl -fsSL gethydrate.dev/install | sh
@@ -23,13 +43,16 @@ The script:
 1. Detects `darwin/arm64` vs `darwin/amd64`.
 2. Downloads the latest tarball from
    [Releases](https://github.com/getHydrate/hydrate-public/releases).
-3. Installs five binaries to `~/.local/bin/`:
+3. Installs the binaries to `~/.local/bin/`:
    - `hydrate` — management CLI
    - `hydrate-server` — local daemon (HTTP API + SSE dashboard)
    - `hydrate-mcp` — MCP server for Claude Desktop, Cursor, Cline, Zed, Gemini CLI
    - `claude-context` — Claude Code `UserPromptSubmit` hook
    - `claude-capture` — Claude Code `Stop` hook
-4. Adds the two hooks to `~/.claude/settings.json` (idempotent).
+   - `claude-precompact`, `claude-session-start`, `claude-tool-{pre,post}` — additional hook shims
+   - `codex-context`, `codex-capture`, `codex-session-start` — Codex equivalents
+   - `vibe-*` — Mistral Vibe shims
+4. Adds the hooks to `~/.claude/settings.json` (idempotent).
 5. Starts `hydrate-server` in the background and writes its port +
    API key to `~/.hydrate/server.{port,key}`.
 
@@ -39,53 +62,56 @@ Confirm with:
 hydrate doctor
 ```
 
-`doctor` runs 17 checks covering PATH, hook registration, daemon
+`doctor` runs 16 checks covering PATH, hook registration, daemon
 liveness, key file permissions, MCP wiring, and Claude Code
 settings. Anything red has a one-line fix beside it.
 
-### Homebrew (closed beta)
-
-A Homebrew tap will be public at launch. Until then it requires a
-beta-tester token; if you're in the closed beta you already have
-the steps. The `curl … | sh` path above is the supported path for
-everyone else.
-
 ## Linux
+
+### Homebrew on Linux
+
+```sh
+brew tap getHydrate/hydrate
+brew install hydrate
+hydrate setup
+hydrate doctor
+```
+
+### Install script
 
 ```sh
 curl -fsSL gethydrate.dev/install | sh
 ```
 
-Same script as macOS — detects `linux/arm64` vs `linux/amd64`,
-puts binaries in `~/.local/bin/`. Make sure `~/.local/bin` is on
-your `PATH`.
+Detects `linux/arm64` vs `linux/amd64` and puts the binaries in
+`~/.local/bin/`. Make sure `~/.local/bin` is on your `PATH`.
 
 If your distro doesn't have `curl`, fetch the tarball manually
-from the Releases page, extract it, and run:
-
-```sh
-./install.sh
-```
-
-inside the extracted directory. The script is the same one the
-hosted install URL serves.
+from [Releases](https://github.com/getHydrate/hydrate-public/releases/latest),
+extract it, and copy `bin/*` into `~/.local/bin/`.
 
 ## Windows
 
-A signed MSI installer is published per release on the
-[Releases](https://github.com/getHydrate/hydrate-public/releases)
-page. Download `hydrate-<version>-windows-amd64.msi`, double-click,
-and accept the elevation prompt. The installer drops the binaries
-under `%LOCALAPPDATA%\Hydrate\bin\`, adds them to `%PATH%`, and
-writes the Claude Code hook entries.
+Each release publishes a Windows ZIP at
+[Releases](https://github.com/getHydrate/hydrate-public/releases/latest):
 
-After install, open PowerShell:
+- `hydrate-v0.4.0-windows-amd64.zip` (Intel / AMD)
+- `hydrate-v0.4.0-windows-arm64.zip` (ARM)
+
+Unzip into a directory on `%PATH%` (for example
+`%LOCALAPPDATA%\Hydrate\bin\`), then in PowerShell:
 
 ```powershell
+hydrate setup     # interactive first-run wizard
 hydrate doctor
 ```
 
-…and follow any fix-up hints.
+A signed MSI installer is on the roadmap — track
+[the MSI tracking issue](https://github.com/getHydrate/hydrate-public/issues)
+for status. Until then the ZIP is the supported path.
+
+WSL users can take either the Linux Homebrew or install-script
+path instead — recommended if you want tmux-based orchestrations.
 
 ## MCP server setup (non-Claude-Code clients)
 

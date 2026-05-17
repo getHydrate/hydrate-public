@@ -18,28 +18,51 @@ across machines you sync — without sending your work to anyone else.
 
 ## Quick install
 
+### macOS / Linux — Homebrew
+
+```sh
+brew tap getHydrate/hydrate
+brew install hydrate
+hydrate setup
+```
+
+### One-line installer (macOS / Linux)
+
 ```sh
 curl -fsSL gethydrate.dev/install | sh
 ```
 
-The script detects your OS + architecture, downloads the matching
-tarball from this repo's [Releases](https://github.com/getHydrate/hydrate-public/releases),
-installs the binaries to `~/.local/bin/`, wires the Claude Code
-hooks into `~/.claude/settings.json`, and starts the local daemon.
+### Manual tarball (any platform)
 
-After it finishes:
+Grab the platform tarball from
+[Releases](https://github.com/getHydrate/hydrate-public/releases/latest)
+and drop the binaries into `~/.local/bin/`.
+
+### Windows
+
+Download `hydrate-v0.4.0-windows-amd64.zip` from
+[Releases](https://github.com/getHydrate/hydrate-public/releases/latest)
+and unzip into a directory on `PATH`. An MSI installer is on the
+roadmap.
+
+After install, run:
 
 ```sh
-hydrate install-hooks   # idempotent; re-runs the hook + MCP wiring
-hydrate doctor          # 17-point health check
+hydrate setup           # interactive first-run wizard
+hydrate doctor          # 16-point health check
 ```
+
+Or fill the form at **[gethydrate.dev/install/first-steps](https://gethydrate.dev/install/first-steps)** —
+it generates a five-stage script (license → project init → optional
+hydration-pack import → optional team-git bootstrap → doctor)
+that you copy and paste into your terminal.
 
 Open Claude Code, run any prompt, and look for the `[hydrate]`
 context block prepended to your first turn. That's it — Hydrate is
 now reading from and writing to your memory on every session.
 
-Full install paths (Linux tarball, Windows MSI, manual hooks): see
-[`INSTALL.md`](INSTALL.md).
+Full install paths (Linux tarball, Windows zip, MCP snippets, manual
+hooks): see [`INSTALL.md`](INSTALL.md).
 
 ## What you can do
 
@@ -56,16 +79,41 @@ Hydrate ships seven slash commands inside Claude Code:
 - `/hydrate-pack-load` — load a project pack (shareable `.hpack`)
 - `/hydrate-help` — reference table
 
-Detailed usage + patterns: [`USAGE.md`](USAGE.md).
+Plus a CLI rich enough that the dashboard's Builders tab can scaffold
+almost every common workflow:
+
+- **`hydrate init`** — turn an existing repo into a Hydrate project, with the LLM drafting starter canon
+- **`hydrate dehydrate`** — replace heavy markdown docs with their distilled summaries (reversible)
+- **`hydrate canon add` / `hydrate fact save`** — pin invariants or record incidental knowledge
+- **`hydrate pack create` / `hydrate pack import`** — share a project's memory as a single `.hpack` file
+- **`hydrate backup` / `hydrate restore`** — encrypted archive of a project's state
+- **`hydrate team push` / `pull` / `status`** — git-as-sync-layer for shared canon
+- **`hydrate skill-mine` / `skill-draft` / `skill-install`** — detect recurring tool-call workflows in your sessions and turn them into Claude Code skills
+- **`hydrate narrate`** — weave session JSONLs + git history + project docs into a `NARRATIVE.md` (use `--update` for incremental appends)
+- **`hydrate orchestrator set` / `get` / `dispatch`** — multi-pane tmux orchestration with state pinned to canon
+
+Detailed usage + patterns: [`USAGE.md`](USAGE.md). Or open the
+dashboard at `/help` for interactive builders that emit the exact
+commands for your settings.
 
 ## Dashboard
 
 `hydrate-server` exposes a local web dashboard at
 `http://localhost:<port>/` (the port is written to
-`~/.hydrate/server.port` on startup). Every pane streams updates
-live over SSE — sessions, facts, dreams, packs, the displacement
-view, orchestration, fatigue, and a homepage with the five
-"what's happening right now" cards.
+`~/.hydrate/server.port` on startup; or run `hydrate dashboard` to
+open it). Every pane streams updates live over SSE.
+
+The dashboard has eight pages, with three of them carrying tabbed
+sub-sections:
+
+- **Home** — live cockpit (token usage, rollups, active projects, orchestrations).
+- **Displacement** — sessions / context-window pressure / model mix over time.
+- **Orchestration** — three tabs: **Live** (in-flight orchestrations), **Build orchestration** (form-driven tmux session generator with one window per agent, save/load to localStorage, optional `hydrate orchestrator set` lines so the layout is recallable from SQLite), **Customise env** (env-var script builder).
+- **Fatigue** — per-project distill / refresh cadence.
+- **Facts** — force-directed graph of every learned fact, filter by project / area / time / pinned.
+- **Skills** — mined workflow patterns; Draft + Install buttons turn one into a Claude Code skill.
+- **Settings** — two tabs: **Current settings** (what's configured) and **Customise** (script builder for `HYDRATE_*` env vars).
+- **Help** — two tabs: **Reference** (every CLI command with examples) and **Builders** (eight task builders).
 
 The dashboard is loopback-only by default; remote access requires
 your API key (written to `~/.hydrate/server.key`).
