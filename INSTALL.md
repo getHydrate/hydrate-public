@@ -66,6 +66,30 @@ hydrate doctor
 liveness, key file permissions, MCP wiring, and Claude Code
 settings. Anything red has a one-line fix beside it.
 
+### First Claude Code session in a project
+
+The first time you open Claude Code inside a project that already
+has a `CLAUDE.md`, Hydrate runs `hydrate dehydrate --mode=full`
+once in the background to extract structured facts from the file
+into the local store. The subprocess is detached — session start
+is never blocked — and writes its log to
+`~/.hydrate/logs/auto-prime.log`. A marker at
+`~/.hydrate/auto-primed/<project-slug>` ensures it only runs once
+per project; delete the marker to retry.
+
+`CLAUDE.md` itself is **not modified** by the auto-prime. If you
+also want to shrink the on-disk file, that's an opt-in CLI step:
+
+```sh
+hydrate dehydrate --apply --mode=summary   # readable summary + operational sections
+hydrate dehydrate --apply --mode=stub      # 5-line pointer + operational sections
+hydrate dehydrate --revert                 # restore CLAUDE.md.pre-hydrate.bak
+```
+
+See [`USAGE.md`](USAGE.md#claudemd-ingestion--hydrate-dehydrate)
+for the full mode table and safety notes.
+
+
 ## Linux
 
 ### Homebrew on Linux
@@ -253,6 +277,10 @@ roadmap.
 | `~/.hydrate/` | DB, server port file, API key |
 | `~/.claude/settings.json` | Claude Code hook registration |
 | `~/.hydrate/hook-selfcheck.log` | hook-pre-flight failure log |
+| `~/.hydrate/auto-primed/<slug>` | first-run dehydrate marker (one per project) |
+| `~/.hydrate/logs/auto-prime.log` | first-run dehydrate subprocess log |
+| `<project>/HYDRATE.md` | dehydrate ledger (created by `hydrate dehydrate --apply`) |
+| `<project>/CLAUDE.md.pre-hydrate.bak` | safety copy written before any CLAUDE.md rewrite |
 
 The DB is a single SQLite file at `~/.hydrate/hydrate.db` — back
 it up the same way you'd back up any other file.

@@ -137,6 +137,61 @@ Pinned canon facts always inject; semantic facts surface when
 relevant. A pack is portable — it doesn't carry your local DB,
 just the memory the recipient should also have.
 
+### First run in a project — auto-prime from CLAUDE.md
+
+The first time Claude Code starts a session inside a project that
+already has a `CLAUDE.md`, Hydrate runs `hydrate dehydrate` once
+in the background to extract structured facts from it into the
+local store. From then on those facts surface via `/hydrate` and
+`/hydrate-project` like any other memory — the LLM no longer has
+to re-read the file every turn to remember the project's rules.
+
+The auto-prime:
+
+- Runs once per project (marker at
+  `~/.hydrate/auto-primed/<slug>`; delete it to retry).
+- Detached subprocess — never blocks session start.
+- Logs to `~/.hydrate/logs/auto-prime.log`.
+- **Does not modify `CLAUDE.md`** — only reads it. Rewriting is a
+  separate, opt-in CLI step (`hydrate dehydrate --mode=summary`).
+- Skipped if a `HYDRATE.md` ledger is already present in the
+  project (a prior explicit `hydrate dehydrate` run has covered it).
+
+### CLAUDE.md ingestion — `hydrate dehydrate`
+
+The slash-command surface above handles in-session memory. For
+the one-shot "compress my existing CLAUDE.md and move the
+knowledge into Hydrate" pass, use the CLI:
+
+```sh
+hydrate dehydrate                          # dry-run preview
+hydrate dehydrate --apply                  # mode=summary (default)
+hydrate dehydrate --apply --mode=stub      # collapse to a 5-line pointer
+hydrate dehydrate --apply --mode=full      # extract facts only, leave file untouched
+hydrate dehydrate --revert                 # restore CLAUDE.md.pre-hydrate.bak
+```
+
+Modes:
+
+- **`summary`** (default) — rewrites CLAUDE.md to a compressed
+  prose summary plus any operational sections preserved verbatim
+  (build commands, hook config, setup steps). Readable by
+  non-Hydrate users.
+- **`stub`** — replaces the file with a ~5-line pointer plus
+  preserved operational content. The smallest CLAUDE.md that still
+  carries forward commands and hooks.
+- **`full`** — leaves CLAUDE.md on disk untouched. Facts still
+  land in Hydrate. This is what the first-run auto-prime uses.
+
+Safety: `--apply` always writes `CLAUDE.md.pre-hydrate.bak`
+before rewriting; the backup is never overwritten on subsequent
+runs. `--revert` restores from it and deletes the facts the
+ledger attributes to prior runs.
+
+Idempotent: re-running on unchanged input is a no-op. The
+`HYDRATE.md` ledger records source hashes so only changed files
+go through the LLM.
+
 ### Multi-tool memory
 
 Same facts surface across every MCP-capable client. Capture them
@@ -159,8 +214,10 @@ hydrate config set <key> <value>
 Common knobs:
 
 - `hydrate.mode` — `default` / `economy` / `turbo`. Economy
-  compresses CLAUDE.md and AGENTS.md in the context block;
-  turbo skips them entirely.
+  extractively compresses any `docs/CONTEXT/*.md` reference
+  material before injection; turbo skips that block entirely.
+  (CLAUDE.md / AGENTS.md are handled by `hydrate dehydrate` —
+  see below — not by per-prompt compression.)
 - `dream.cycle` — `micro` / `standard` / `deep`. How aggressively
   the periodic dream summariser runs.
 

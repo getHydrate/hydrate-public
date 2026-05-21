@@ -61,6 +61,14 @@ Open Claude Code, run any prompt, and look for the `[hydrate]`
 context block prepended to your first turn. That's it — Hydrate is
 now reading from and writing to your memory on every session.
 
+The first session you start inside a project that already has a
+`CLAUDE.md` triggers a one-shot background pass that extracts the
+file's contents into Hydrate's fact store, so the LLM doesn't have
+to re-read the whole file every turn. The file itself is left
+untouched — see [`USAGE.md`](USAGE.md#first-run-in-a-project--auto-prime-from-claudemd)
+for the opt-in `hydrate dehydrate` flow if you want to also
+shrink the on-disk file.
+
 Full install paths (Linux tarball, Windows zip, MCP snippets, manual
 hooks): see [`INSTALL.md`](INSTALL.md).
 
@@ -83,7 +91,7 @@ Plus a CLI rich enough that the dashboard's Builders tab can scaffold
 almost every common workflow:
 
 - **`hydrate init`** — turn an existing repo into a Hydrate project, with the LLM drafting starter canon
-- **`hydrate dehydrate`** — replace heavy markdown docs with their distilled summaries (reversible)
+- **`hydrate dehydrate`** — ingest `CLAUDE.md` (and other markdown docs) into Hydrate's fact store, with optional rewrite to a summary or stub (reversible). Runs automatically in `--mode=full` (no rewrite) the first time you open a project.
 - **`hydrate canon add` / `hydrate fact save`** — pin invariants or record incidental knowledge
 - **`hydrate pack create` / `hydrate pack import`** — share a project's memory as a single `.hpack` file
 - **`hydrate backup` / `hydrate restore`** — encrypted archive of a project's state
