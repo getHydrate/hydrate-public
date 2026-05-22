@@ -192,6 +192,59 @@ Idempotent: re-running on unchanged input is a no-op. The
 `HYDRATE.md` ledger records source hashes so only changed files
 go through the LLM.
 
+### Project wiki — `hydrate wiki curate`
+
+v0.6.0 ships the **autonomous project wiki**: a set of regenerable
+markdown pages, derived from your codebase, that live in your repo
+under `<project>/HYDRATE-wiki/`.
+
+Default install — five canonical project pages plus one page per
+`.go` source file (Purpose, Public API, Callers, Tests, Invariants):
+
+```
+HYDRATE-wiki/
+├── 00-overview.md
+├── 01-architecture.md
+├── 02-commands.md
+├── 03-mcp-and-integrations.md
+├── 04-onboarding.md
+└── files/.../<source>.go.md
+```
+
+Trigger:
+
+- **Automatic** — `claude-session-start` fires the worker every
+  6 hours via a detached subprocess. Cadence marker at
+  `~/.hydrate/auto-wiki/<slug>.last`; delete it to force a
+  re-curate.
+- **Manual** — `hydrate wiki curate [DIR]` with optional
+  `--max-pages-per-cycle=N`, `--dry-run`, `--wiki-dir=<path>`.
+- **Dashboard** — `/wiki` route. Project picker, page list,
+  rendered body, "Curate now" button.
+- **MCP** — `curate_wiki` tool: callable from any MCP-capable
+  client.
+
+Each page carries YAML frontmatter recording the SHA of every
+source file it cites. The next curate cycle queues a page for
+re-author when any cited source changes, any source is deleted,
+or the page is older than 60 days.
+
+LLM use:
+
+- **`claude` on PATH** → worker calls `claude -p` headlessly; no
+  API key needed.
+- **Env keys** (`ANTHROPIC_API_KEY` / `OPENAI_API_KEY`) or a
+  configured local endpoint → used in that precedence order.
+- **No LLM** → pages still render! The structural sections
+  (Public API, Callers, Imports, Tests) come from the Go parser
+  with zero LLM calls; the prose sections show a clear "no LLM
+  available" hint where the summary would have lived.
+
+Non-`.go` files on a default install render a stub page with the
+verbatim hint: *"tree-sitter not installed — run
+`hydrate setup-treesitter` to populate this page"*. Multi-language
+parsing arrives in v0.6.1 via the opt-in tree-sitter installer.
+
 ### Multi-tool memory
 
 Same facts surface across every MCP-capable client. Capture them
