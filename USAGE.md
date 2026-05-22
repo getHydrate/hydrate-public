@@ -198,8 +198,10 @@ v0.6.0 ships the **autonomous project wiki**: a set of regenerable
 markdown pages, derived from your codebase, that live in your repo
 under `<project>/HYDRATE-wiki/`.
 
-Default install — five canonical project pages plus one page per
-`.go` source file (Purpose, Public API, Callers, Tests, Invariants):
+Default install — seven canonical project pages plus one page per
+source file (10 sections each: Purpose, API split into Public /
+Private, How it works, Callers, What can go wrong, Configuration,
+Tests, Invariants, Dependencies, See also):
 
 ```
 HYDRATE-wiki/
@@ -208,8 +210,14 @@ HYDRATE-wiki/
 ├── 02-commands.md
 ├── 03-mcp-and-integrations.md
 ├── 04-onboarding.md
-└── files/.../<source>.go.md
+├── 05-canon.md
+├── 06-configuration.md
+└── files/.../<source>.md
 ```
+
+Sections without real content are omitted entirely — Hydrate does
+not ship "(no callers found)" placeholders. A wiki page exists when
+there's something real to say; otherwise it doesn't.
 
 Trigger:
 
@@ -246,6 +254,34 @@ languages: Go, Python, JavaScript, TypeScript / TSX, Rust, Java,
 Ruby, Swift, C, C++. A Python or Rust repo gets the same per-file
 pages a Go repo does. No installer, no download — the grammars live
 inside the `hydrate` binary.
+
+**Configuration extraction.** Every file page surfaces the CLI
+flags, environment variables, and HTTP routes the file declares —
+across all 11 languages. A project-level `06-configuration.md`
+aggregates them with clickable per-line source links. Answers
+"what does this thing read at startup?" without grepping.
+
+**Canon mirror.** `05-canon.md` is a read-only view of the project's
+pinned canon facts from `~/.hydrate/data.db`. Source of truth stays
+in SQLite; the wiki page is regenerated each curate cycle.
+
+**Wiki ↔ Claude integration:**
+
+- **CLAUDE.md pointer**: on first curate, a sentinel-wrapped block
+  is appended to `CLAUDE.md` telling the LLM the wiki exists.
+- **MCP `wiki_page` tool**: any MCP-capable client can fetch a
+  page on demand by name.
+- **Retrieval injection**: opt-in via `HYDRATE_WIKI_INJECT=1`. The
+  Claude Code `UserPromptSubmit` hook embeds the prompt, finds
+  the most-relevant wiki page by cosine similarity, and prepends a
+  short excerpt to the prompt. Off by default — an extra embedding
+  call per prompt is real latency; the env flag keeps the
+  cost-vs-benefit decision in your hands.
+
+**Stable UUIDs + redirects:** every wiki page carries a stable
+`id:` in its frontmatter. When a source file is renamed, the
+worker writes a redirect stub at the old wiki path so inbound
+links survive refactors.
 
 ### Multi-tool memory
 
