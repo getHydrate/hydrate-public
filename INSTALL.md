@@ -287,5 +287,9 @@ roadmap.
 | `~/.hydrate/auto-wiki/<slug>.dir` | dashboard discovery pointer (absolute wiki dir) |
 | `~/.hydrate/logs/auto-wiki.log` | wiki worker subprocess log |
 
+(Note: v0.6.0+ embeds a pure-Go tree-sitter runtime — no
+`~/.hydrate/treesitter/` directory and no separate installer. The
+grammars ship in the `hydrate` binary, which is ~50 MB as a result.)
+
 The DB is a single SQLite file at `~/.hydrate/hydrate.db` — back
 it up the same way you'd back up any other file.

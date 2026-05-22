@@ -92,7 +92,7 @@ almost every common workflow:
 
 - **`hydrate init`** — turn an existing repo into a Hydrate project, with the LLM drafting starter canon
 - **`hydrate dehydrate`** — ingest `CLAUDE.md` (and other markdown docs) into Hydrate's fact store, with optional rewrite to a summary or stub (reversible). Runs automatically in `--mode=full` (no rewrite) the first time you open a project.
-- **`hydrate wiki curate`** — autonomous project wiki. Materialises five canonical project pages plus a Purpose/Public-API/Callers/Tests/Invariants page per source file into `<project>/HYDRATE-wiki/`, regenerable from the code. Runs automatically every six hours on session start; visible to every runtime via plain markdown in the repo.
+- **`hydrate wiki curate`** — autonomous project wiki. Materialises five canonical project pages plus a Purpose/Public-API/Callers/Tests/Invariants page per source file into `<project>/HYDRATE-wiki/`, regenerable from the code. Multi-language via pure-Go tree-sitter embedded in the binary (Go, Python, JS, TS, Rust, Java, Ruby, Swift, C, C++). Runs automatically every six hours on session start; visible to every runtime via plain markdown in the repo.
 - **`hydrate canon add` / `hydrate fact save`** — pin invariants or record incidental knowledge
 - **`hydrate pack create` / `hydrate pack import`** — share a project's memory as a single `.hpack` file
 - **`hydrate backup` / `hydrate restore`** — encrypted archive of a project's state

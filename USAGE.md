@@ -240,10 +240,12 @@ LLM use:
   with zero LLM calls; the prose sections show a clear "no LLM
   available" hint where the summary would have lived.
 
-Non-`.go` files on a default install render a stub page with the
-verbatim hint: *"tree-sitter not installed — run
-`hydrate setup-treesitter` to populate this page"*. Multi-language
-parsing arrives in v0.6.1 via the opt-in tree-sitter installer.
+**Multi-language out of the box.** v0.6.0 ships a pure-Go tree-sitter
+runtime embedded in the binary, with hand-written queries for 11
+languages: Go, Python, JavaScript, TypeScript / TSX, Rust, Java,
+Ruby, Swift, C, C++. A Python or Rust repo gets the same per-file
+pages a Go repo does. No installer, no download — the grammars live
+inside the `hydrate` binary.
 
 ### Multi-tool memory
 
