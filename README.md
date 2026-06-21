@@ -1,20 +1,49 @@
 # Hydrate
 
-**Local-first persistent memory for Claude Code.**
+**Local-first persistent memory for your coding agents.**
 
-Hydrate runs as a small local daemon that watches every Claude Code
-session, distils what mattered, and quietly re-injects the relevant
-parts into your next prompt. Memory across sessions, across projects,
-across machines you sync — without sending your work to anyone else.
+Hydrate runs as a small local daemon that watches your coding-agent
+sessions — Claude Code, OpenAI Codex, Cursor, Mistral Vibe and more —
+distils what mattered, and re-surfaces the relevant parts in your next
+session. Memory across sessions, across projects, across runtimes, across
+machines you sync — without sending your work to anyone else.
 
 ## Why
 
-- **Memory across sessions.** Claude Code forgets every `/clear`.
-  Hydrate doesn't.
+- **Memory across sessions.** Your agent forgets every `/clear` or new
+  session. Hydrate doesn't.
+- **One memory, every runtime.** The same local store feeds Claude Code,
+  Codex, Cursor, Vibe and Copilot — start in one, recall in another. See
+  [**Works with**](#works-with) for exactly how each runtime is wired.
 - **Works offline.** The daemon, the index, and the MCP server all
   run on your machine. No third-party calls in the hot path.
 - **One binary, auditable surface.** Five Go binaries under 10 MB
   total, no kernel hooks, no background uploaders.
+
+## Works with
+
+Hydrate reaches a runtime over three independent channels: an **inject
+hook** (pushes remembered context into the model at session start), a
+**capture hook** (ingests the transcript when a session ends), and **MCP**
+(the model pulls memory on demand). They're independent — and we're honest
+about which actually reach the model on each host, because a hook that
+*fires* isn't the same as one the host *delivers*.
+
+| Runtime | Auto-recall (inject) | Capture | MCP recall | Status |
+|---|:--:|:--:|:--:|---|
+| **Claude Code** | ✅ | ✅ | ✅ | full auto-memory |
+| **OpenAI Codex** | ✅ | ✅ | ✅ | full auto-memory |
+| **Mistral Vibe** | ✅ (fork) | ✅ | ✅ | full (fork) |
+| **Cursor** | ⚠️ host-gated | ✅ | ⚠️ registered | capture + MCP |
+| **Antigravity** | ❌ host-gated | ✅ | ✅ | capture + MCP |
+| **GitHub Copilot** | ⚠️ no session-start inject | ✅ | ✅ | capture + MCP |
+| **IBM Bob** | ❌ (host hooks inert) | ➖ | ✅ | in development |
+
+On Claude Code and Codex, recall is automatic every session. Where a host
+withholds injected context from the model (Cursor, Antigravity), Hydrate
+still **captures** every session and serves recall over **MCP**. We mark
+our own gaps rather than tick every box — full method and per-runtime
+evidence in [**docs/RUNTIME_INTEGRATION.md**](docs/RUNTIME_INTEGRATION.md).
 
 ## Quick install
 
@@ -59,7 +88,10 @@ that you copy and paste into your terminal.
 
 Open Claude Code, run any prompt, and look for the `[hydrate]`
 context block prepended to your first turn. That's it — Hydrate is
-now reading from and writing to your memory on every session.
+now reading from and writing to your memory on every session. (On
+Codex the same auto-injection applies; on Cursor, Antigravity and
+Copilot, Hydrate still captures every session and recall comes through
+MCP — see [Works with](#works-with).)
 
 The first session you start inside a project that already has a
 `CLAUDE.md` triggers a one-shot background pass that extracts the
@@ -103,6 +135,101 @@ almost every common workflow:
 Detailed usage + patterns: [`USAGE.md`](USAGE.md). Or open the
 dashboard at `/help` for interactive builders that emit the exact
 commands for your settings.
+
+## Orchestration — multi-agent work you can leave running
+
+Orchestration replaces "one model, one shot" with a persisted,
+**adversarial** loop: a generator and an *independent, cross-family*
+critic argue through bounded rounds over a tracked ledger of objections,
+converging only when material defects clear and measurable acceptance
+criteria are met — with **fail-closed gates** that escalate to a human
+rather than ever ship a false pass. The local `hydrate-server` daemon
+drives it as a pure, resumable state machine (all state in SQLite), and
+it's exposed as MCP tools (`design_*`, `develop_*`, …) so **any connected
+runtime can drive it** — not locked to one vendor's agent.
+
+| Mode | Artifact | Generator → Reviewer | Terminal gate |
+|---|---|---|---|
+| **Design** | plan / spec | Author (Opus) → Critic (Codex), human arbitrates | Sign-off: zero material objections + acceptance met |
+| **Develop** | code patches | Implementer → Reviewer → Judge → Audit | Human integrate gate + post-merge audit |
+| **Image** | generated images | Generator → Judge (design-judgement) | Accept |
+| **Studio** | UX design → build | Designer → approve/revise → implement | Design approval + build accept |
+
+Why it produces trustworthy work:
+
+- **Adversarial, cross-family review** — the critic is prompted to refute,
+  not rubber-stamp, and is a *different model family* so one model's blind
+  spots aren't shared by its reviewer.
+- **Objection ledger (severity + basis)** — every concern is tracked,
+  deduped, recurrence-counted; nothing is silently dropped, and you get an
+  auditable record of *why* an artifact changed.
+- **Convergence test + round cap** — stops only at zero-material +
+  diminishing returns; won't ship with open defects, won't polish forever,
+  and escalates honestly to `needs_human` when stuck.
+- **Fail-closed gates** — a gate that can't render a verdict goes to
+  `needs_human`, never false-green.
+- **Pure state machines + SQLite** — deterministic, unit-tested,
+  resumable across daemon restarts.
+
+The payoff is **trustworthy autonomy** — work you can leave running
+because it won't loop forever, won't lie about being done, and leaves an
+auditable trail of every decision. *(This README's plan was itself
+pressure-tested through Design mode.)*
+
+## Peernet — give your agents a way to talk to each other
+
+Hydrate gives your coding agents shared memory. **Peernet** gives them a
+way to talk to each other.
+
+It is **opt-in and local-first**. Activated agent sessions find each other
+over your own network (LAN, VPN, or Tailscale) with no central server,
+pair with a short code, and exchange authenticated, audited messages.
+Nothing leaves your machines unless you turn it on.
+
+On top of Peernet, the **session-addressed relay** lets you name a live
+session and ask it a question directly. The daemon never answers; the
+target agent does, on its next turn, from its own working context:
+
+```sh
+hydrate ask <target-project> "what did you mean by 'gate' in the handoff?"
+```
+
+Whether that answer is released straight away or held for a person to
+approve is set per project by a **release policy** (auto or human), so
+disclosure is governed in one place rather than buried in each runtime's
+permission prompts.
+
+The one thing that varies by runtime is **autonomy**: can the named
+session answer on its own, or must a human approve the tool call first?
+
+| Runtime | Autonomous answering | How |
+|---|:--:|---|
+| **Codex** | ✅ | Answers peer questions unprompted |
+| **Claude** | ✅ | Relay tools pre-granted at install |
+| **Copilot** | ✅ | Per-repo MCP approval written at install |
+| **Mistral Vibe** | 🔜 | Planned |
+
+> **Status.** Free-text relay answers work between sessions on the same
+> machine today. Cross-device answering rides Peernet's v2 peer-onboarding
+> and is on the roadmap; the cross-machine peer round-trip itself has been
+> demonstrated over Tailscale.
+
+## Benchmarks
+
+- **Token reduction (the headline).** On a real coding-task A/B
+  (`lquery`, n=10), Hydrate cut **output tokens −11.1%** and **cost −6.3%**
+  at **quality parity** — memory that pays for itself rather than costing
+  context budget.
+- **Retrieval.** LongMemEval **recall@10 = 0.86** (0.95 on multi-session
+  questions) — the right context is in the top results almost every time.
+- **Compression.** The distil pipeline compresses captured sessions
+  **99.2%** (475.7M → 3.7M tokens across 22k+ sessions) before they re-enter
+  a prompt.
+- **Speed & footprint.** **Sub-10 ms** local retrieval, **no reranker, no
+  GPU, no model download** — a pure-Go binary you can audit in an afternoon.
+
+Full methodology + head-to-head comparisons:
+[gethydrate.dev](https://gethydrate.dev).
 
 ## Dashboard
 
