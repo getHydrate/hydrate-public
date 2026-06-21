@@ -29,6 +29,26 @@ machines unless you turn it on.
 - **Local-first & auditable.** Five Go binaries under 10 MB — no torch, no
   GPU, no background uploaders, no third-party calls in the hot path.
 
+## Why Hydrate
+
+*Without Hydrate:* every `/clear` is amnesia, and each runtime is its own
+island — your agent re-asks what stack you use for the 12th time this week.
+
+*With Hydrate:* your conventions, decisions and corrections are already
+there on the next turn — in Claude today, in Codex tomorrow — and you pay
+fewer tokens to use them.
+
+Two things set Hydrate apart from other memory tools:
+
+- **We're honest about what actually reaches your model.** We
+  *delivery-test* every runtime and mark our own gaps (see
+  [Works with](#works-with)) — "supported" means we proved the context
+  reached the model, not that we wrote a config file. Most tools claim a
+  runtime once the config is written; we verify the model received it.
+- **Private by default — no telemetry of any kind.** Local, pure-Go, no
+  model download, nothing phoned home, no usage analytics. Your work never
+  leaves your machine.
+
 ## Works with
 
 Hydrate reaches a runtime over three independent channels: an **inject
