@@ -335,6 +335,38 @@ The dashboard has eight pages, three of them with tabbed sub-sections:
 The dashboard is loopback-only by default; remote access requires your API
 key, written to `~/.hydrate/server.key`.
 
+## Open Knowledge Format (OKF)
+
+Hydrate's durable memory is portable by design. Every long-lived artefact it
+produces can be emitted as an [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf)
+(OKF) v0.1 bundle: a plain, git-forkable directory of typed markdown concept
+documents, not a proprietary blob. Your memory is yours, readable, diffable,
+versionable and loadable by any OKF-aware tool.
+
+| Surface | Command | Concept doc types |
+|---|---|---|
+| Autonomous wiki | `hydrate wiki curate` (verify with `hydrate wiki verify --okf`) | Reference |
+| Hydration packs | `hydrate pack create --okf` and `hydrate pack import` | Fact, Canon, Session Digest |
+| Handover archive | `hydrate handover export --okf` | Handover |
+
+Each concept document is a markdown file with a small YAML frontmatter (`type`,
+`title`, and where applicable an RFC3339 `timestamp`), and the human-readable
+content lives in the body. A bundle is a directory with a conformant root
+`index.md` (carrying `okf_version`) plus the concept documents. Hydrate-specific
+scalar metadata (confidence, content hash, tier, git provenance) sits in an
+indented frontmatter extension that OKF consumers preserve as opaque data and
+otherwise ignore, so a bundle stays valid OKF while losing nothing on a Hydrate
+round-trip.
+
+Conformance is enforced, not asserted. An in-tree linter checks every wiki and
+pack bundle against the OKF v0.1 conformance rules on each curation, and
+Hydrate's bundles have been verified to load under the upstream OKF reference
+parser and to round-trip byte-for-byte through the backend.
+
+A worked example lives in [`okf/`](okf/) (it passes `hydrate wiki verify --okf`),
+and the full detail is in
+[`docs/OKF_COMPATIBILITY.md`](docs/OKF_COMPATIBILITY.md).
+
 ## Status
 
 Beta. A free tier is available, the Pro tier is in closed beta, and Enterprise
@@ -350,6 +382,8 @@ is available on request. See
 - [`CONTRIBUTING.md`](CONTRIBUTING.md): how to file issues.
 - [`docs/ORCHESTRATION_GUIDE.md`](docs/ORCHESTRATION_GUIDE.md): driving the
   multi-agent orchestration engine, with worked examples.
+- [`docs/OKF_COMPATIBILITY.md`](docs/OKF_COMPATIBILITY.md): exporting memory as
+  Open Knowledge Format bundles.
 
 Homepage, benchmarks and comparisons: [gethydrate.dev](https://gethydrate.dev).
 
