@@ -336,7 +336,6 @@ is available on request. See
 - [`USAGE.md`](USAGE.md): slash commands and the recovery patterns.
 - [`SECURITY.md`](SECURITY.md): reporting vulnerabilities.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md): how to file issues.
-- [`ROADMAP.md`](ROADMAP.md): what is next.
 - [`docs/ORCHESTRATION_GUIDE.md`](docs/ORCHESTRATION_GUIDE.md): driving the
   multi-agent orchestration engine, with worked examples.
 
