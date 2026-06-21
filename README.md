@@ -64,6 +64,20 @@ Two things set Hydrate apart from other memory tools:
 
 Never `/compact` again.
 
+`/hydrate-distill` writes a high-fidelity handover, promotes durable state to
+canon, goals and facts, then distils the prose:
+
+<div align="center">
+  <img src="assets/distill.png" alt="The /hydrate-distill command running its three phases: handover write, canon and goal promotion, then prose distil" width="820">
+</div>
+
+After `/clear`, `/hydrate-last` reads the handover and a structured resume
+briefing, so you are back where you left off for a few hundred tokens:
+
+<div align="center">
+  <img src="assets/resume.png" alt="The /hydrate-last command after /clear: it reads the handover and a structured session resume briefing with active goals and recent detail" width="820">
+</div>
+
 **Want to design a specification?** Ask your agent:
 
 > using hydrate design orchestration, create me a specification for X

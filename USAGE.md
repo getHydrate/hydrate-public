@@ -155,6 +155,20 @@ so `/hydrate-last` reads a tight, accurate briefing rather than re-pasting the
 conversation. The recall costs a few hundred tokens even after a multi-hour
 session.
 
+`/hydrate-distill` runs the three phases in order, handover then canon and goal
+promotion then prose distil:
+
+<div align="center">
+  <img src="assets/distill.png" alt="The /hydrate-distill command running its three phases: handover write, canon and goal promotion, then prose distil" width="820">
+</div>
+
+After `/clear`, `/hydrate-last` reads the handover and the structured resume
+briefing, surfacing the active goals and recent detail from the last session:
+
+<div align="center">
+  <img src="assets/resume.png" alt="The /hydrate-last command after /clear: it reads the handover and a structured session resume briefing with active goals and recent detail" width="820">
+</div>
+
 ## The handover CLI
 
 `/hydrate-distill` drives the handover, but you can also work with it directly:
