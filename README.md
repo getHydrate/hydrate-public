@@ -1,18 +1,6 @@
-```
-────────────────────────── Welcome to ───────────────────────────
-                           ╻                                     
-                          ╱ ╲                                    
-                         ╱   ╲                                   
-                         │   │                                   
-                         ╲___╱                                   
-            █   █ █   █ ████  ████   ███  █████ █████            
-            █   █  █ █  █   █ █   █ █   █   █   █                
-            █████   █   █   █ ████  █████   █   ████             
-            █   █   █   █   █ █  █  █   █   █   █                
-            █   █   █   ████  █   █ █   █   █   █████            
-              ~~~~~   ~~~~~   ~~~~~   ~~~~~   ~~~~~              
-─────────── the platform layer for your coding agents ───────────
-```
+<p align="center">
+  <img src="assets/banner.png" alt="Hydrate: the platform layer for your coding agents" width="820">
+</p>
 
 # Hydrate
 
