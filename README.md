@@ -296,10 +296,10 @@ specific about what each number measures.
 
 | Benchmark | Result | What it measures |
 |---|---|---|
-| 🪙 **Token reduction** (headline) | **11.1% fewer output tokens**, 6.3% lower cost, at quality parity | lquery coding A/B, n=10: the same work for fewer tokens |
-| 🎯 **Retrieval** | **R@10 = 0.86** (0.95 on multi-session) | LongMemEval, n=500: the right context lands in the top ten |
-| 🗜️ **Compression** | **99.2%** (475.7M to 3.7M tokens) | distil pipeline across 22,483 sessions, before re-injection |
-| ⚡ **Speed and footprint** | **sub-10 ms** retrieval, no reranker, no GPU, no model download | pure Go, small enough to audit in an afternoon |
+| **Token reduction** (headline) | **11.1% fewer output tokens**, 6.3% lower cost, at quality parity | lquery coding A/B, n=10: the same work for fewer tokens |
+| **Retrieval** | **R@10 = 0.86** (0.95 on multi-session) | LongMemEval, n=500: the right context lands in the top ten |
+| **Compression** | **99.2%** (475.7M to 3.7M tokens) | distil pipeline across 22,483 sessions, before re-injection |
+| **Speed and footprint** | **sub-10 ms** retrieval, no reranker, no GPU, no model download | pure Go, small enough to audit in an afternoon |
 
 Retrieval recall and end-to-end QA accuracy are different measurements, so we
 do not place our retrieval number beside another tool's QA-accuracy number.
@@ -307,6 +307,10 @@ Full methodology and head-to-head comparisons are at
 [gethydrate.dev](https://gethydrate.dev).
 
 ## Dashboard
+
+<p align="center">
+  <img src="assets/dashboard.png" alt="The Hydrate dashboard: a live cockpit of usage, token displacement and active projects" width="820">
+</p>
 
 `hydrate-server` exposes a local web dashboard at `http://localhost:<port>/`.
 The port is written to `~/.hydrate/server.port` on startup, or run `hydrate
