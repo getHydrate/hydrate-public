@@ -1,16 +1,17 @@
 ```
-────────────── Welcome to ───────────────
-                   .
-                  ( )
-                   v
-█   █ █   █ ████  ████   ███  █████ █████
-█   █  █ █  █   █ █   █ █   █   █   █     
-█████   █   █   █ ████  █████   █   ████ 
-█   █   █   █   █ █  █  █   █   █   █     
-█   █   █   ████  █   █ █   █   █   █████ 
-░░░▒░░░░░▒░░░░░▒░░░░░▒░░░░░▒░░░░░▒░░░░░▒░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-the platform layer for your coding agents
+────────────────────────── Welcome to ───────────────────────────
+                           ╻                                     
+                          ╱ ╲                                    
+                         ╱   ╲                                   
+                         │   │                                   
+                         ╲___╱                                   
+            █   █ █   █ ████  ████   ███  █████ █████            
+            █   █  █ █  █   █ █   █ █   █   █   █                
+            █████   █   █   █ ████  █████   █   ████             
+            █   █   █   █   █ █  █  █   █   █   █                
+            █   █   █   ████  █   █ █   █   █   █████            
+              ~~~~~   ~~~~~   ~~~~~   ~~~~~   ~~~~~              
+─────────── the platform layer for your coding agents ───────────
 ```
 
 # Hydrate
@@ -62,6 +63,29 @@ Two things set Hydrate apart from other memory tools:
 - **Private by default, with no telemetry of any kind.** Local, pure Go, no
   model download, nothing phoned home and no usage analytics. Your work never
   leaves your machine.
+
+## TL;DR: how to use
+
+**Context running out?** Distil, clear, resume:
+
+```
+/hydrate-distill
+/clear
+/hydrate-last
+```
+
+Never `/compact` again.
+
+**Want to design a specification?** Ask your agent:
+
+> using hydrate design orchestration, create me a specification for X
+
+**Want to code?** Ask your agent:
+
+> using hydrate orchestration, please implement the specification X
+
+You get better-quality specifications, better code, long-running development,
+and token reduction.
 
 ## Works with
 
