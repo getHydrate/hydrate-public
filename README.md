@@ -14,9 +14,9 @@ turn it on.
 - **Memory across sessions and runtimes.** Your agent forgets every `/clear`
   or new session; Hydrate does not. The same local store feeds every runtime,
   so you start in one and recall in another. See [Works with](#works-with).
-- **Orchestration you can trust.** An adversarial, cross-family multi-agent
-  loop with fail-closed gates. You can leave it running, because it will not
-  loop forever or claim to be done when it is not. See
+- **Orchestration that raises the quality bar.** An adversarial, cross-family
+  multi-agent loop with fail-closed gates. It catches what a single pass
+  misses, and it will not loop forever or claim to be done when it is not. See
   [Orchestration](#orchestration).
 - **Token reduction.** A measured 11.1% fewer output tokens at equal quality,
   so memory shrinks the bill instead of eating your context. See
@@ -132,8 +132,10 @@ are in [`INSTALL.md`](INSTALL.md).
 
 ## Orchestration
 
-**Multi-agent work you can leave running.** Orchestration replaces "one
-model, one shot" with a persisted, adversarial loop. A generator and an
+**Quality through structured disagreement, not a single confident pass.**
+Orchestration replaces "one model, one shot" with a persisted, adversarial
+loop. A single model cannot give itself a sceptical second opinion;
+orchestration supplies one from a different model family. A generator and an
 independent, cross-family critic argue through bounded rounds over a tracked
 ledger of objections, and the loop converges only when material defects clear
 and the measurable acceptance criteria are met. Fail-closed gates escalate to
@@ -149,7 +151,7 @@ can drive it.
 | **Image** | generated images | Generator → Judge (design-judgement) | accept |
 | **Studio** | UX design, then build | Designer → approve or revise → implement | design approval, build accept |
 
-Why it produces trustworthy work:
+Why it produces better work:
 
 - **Adversarial, cross-family review.** The critic is prompted to refute
   rather than rubber-stamp, and it is a different model family, so one model's
@@ -166,10 +168,14 @@ Why it produces trustworthy work:
 - **Pure state machines plus SQLite.** Transitions are deterministic and
   unit-tested, and every run resumes across daemon restarts.
 
-The result is autonomy you can trust. You can leave a run going, because it
-will not loop forever or claim to be finished early, and it leaves an
-auditable trail of every decision. This README's own plan was pressure-tested
-through Design mode.
+The result is two-sided: better work, because a cross-family critic catches
+what the author cannot see, and trustworthy work, because the gates will not
+claim the job is done when it is not. You can leave a run going, and it leaves
+an auditable trail of every decision. This README's own plan was
+pressure-tested through Design mode.
+
+Full walkthrough, with the real bugs it has caught and what they were worth:
+[docs/ORCHESTRATION_GUIDE.md](docs/ORCHESTRATION_GUIDE.md).
 
 ## Peernet
 
@@ -316,6 +322,8 @@ is available on request. See
 - [`SECURITY.md`](SECURITY.md): reporting vulnerabilities.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md): how to file issues.
 - [`ROADMAP.md`](ROADMAP.md): what is next.
+- [`docs/ORCHESTRATION_GUIDE.md`](docs/ORCHESTRATION_GUIDE.md): driving the
+  multi-agent orchestration engine, with worked examples.
 
 Homepage, benchmarks and comparisons: [gethydrate.dev](https://gethydrate.dev).
 
