@@ -1,24 +1,33 @@
 # Hydrate
 
-**Local-first persistent memory for your coding agents.**
+**The platform layer for your coding agents.**
+*Memory · orchestration · token reduction · cross-agent — one daemon, no cloud.*
 
-Hydrate runs as a small local daemon that watches your coding-agent
-sessions — Claude Code, OpenAI Codex, Cursor, Mistral Vibe and more —
-distils what mattered, and re-surfaces the relevant parts in your next
-session. Memory across sessions, across projects, across runtimes, across
-machines you sync — without sending your work to anyone else.
+Hydrate began as cross-platform, token-reduced memory. It's now the shared
+platform layer underneath every coding agent you use. One small local
+daemon gives Claude Code, OpenAI Codex, Cursor, Mistral Vibe and Copilot
+the things they don't have on their own — and your work never leaves your
+machines unless you turn it on.
 
-## Why
+## What you get
 
-- **Memory across sessions.** Your agent forgets every `/clear` or new
-  session. Hydrate doesn't.
-- **One memory, every runtime.** The same local store feeds Claude Code,
-  Codex, Cursor, Vibe and Copilot — start in one, recall in another. See
-  [**Works with**](#works-with) for exactly how each runtime is wired.
-- **Works offline.** The daemon, the index, and the MCP server all
-  run on your machine. No third-party calls in the hot path.
-- **One binary, auditable surface.** Five Go binaries under 10 MB
-  total, no kernel hooks, no background uploaders.
+- **Memory across sessions and runtimes.** Your agent forgets every
+  `/clear` or new session; Hydrate doesn't. The same local store feeds
+  every runtime — start in one, recall in another.
+  → [Works with](#works-with)
+- **Orchestration you can trust.** An adversarial, cross-family multi-agent
+  loop with fail-closed gates — work you can leave running because it won't
+  loop forever or lie about being done.
+  → [Orchestration](#orchestration--multi-agent-work-you-can-leave-running)
+- **Token reduction that pays for itself.** A measured −11.1% output tokens
+  at quality parity — memory that shrinks the bill instead of eating your
+  context. → [Benchmarks](#benchmarks)
+- **Cross-agent coordination.** Peernet lets activated sessions find each
+  other over your own network and ask each other questions — opt-in,
+  authenticated, audited.
+  → [Peernet](#peernet--give-your-agents-a-way-to-talk-to-each-other)
+- **Local-first & auditable.** Five Go binaries under 10 MB — no torch, no
+  GPU, no background uploaders, no third-party calls in the hot path.
 
 ## Works with
 
