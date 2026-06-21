@@ -1,7 +1,7 @@
 # Hydrate
 
 **The platform layer for your coding agents.**
-*Memory, orchestration, token reduction, cross-agent. One daemon, no cloud.*
+*Memory, orchestration, quality uplift, token reduction, cross-agent. One daemon, no cloud.*
 
 Hydrate began as cross-platform, token-reduced memory. It is now the shared
 platform layer underneath every coding agent you use. One small local daemon
