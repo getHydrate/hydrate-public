@@ -5,8 +5,8 @@
 Email **security@gethydrate.dev** with the details. We will respond within
 two working days (Europe/London business hours).
 
-For urgent issues — actively exploited vulnerabilities, credential leaks,
-supply-chain compromise — mark the email subject `URGENT` and we will
+For urgent issues (actively exploited vulnerabilities, credential leaks,
+supply-chain compromise), mark the email subject `URGENT` and we will
 prioritise within the same working day.
 
 Please do not file public GitHub issues for security reports. We will
@@ -54,8 +54,8 @@ curl -fsSL gethydrate.dev/install | sh
 ```
 
 Hosted on the canonical domain, served over HTTPS with a Let's Encrypt
-certificate. The Homebrew tap is `seamuswaldron/hydrate` (GitHub:
-`SeamusWaldron/homebrew-hydrate`). Release artefacts are signed; the public
+certificate. The Homebrew tap is `getHydrate/hydrate` (GitHub:
+`getHydrate/homebrew-hydrate`). Release artefacts are signed; the public
 key is published in the GitHub release notes.
 
 If a third party offers a Hydrate binary that does not originate from one
@@ -64,7 +64,7 @@ of the channels above, treat it as untrusted.
 ## Supported versions
 
 We support the latest minor release on `main` and the previous minor
-release for security patches. Older versions are end-of-life — please
+release for security patches. Older versions are end-of-life; please
 upgrade before reporting issues against them.
 
 ## Out of scope

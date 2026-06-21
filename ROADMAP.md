@@ -1,16 +1,28 @@
 # Roadmap
 
-Hydrate ships weekly. This is a tease, not a commitment — the
+Hydrate ships weekly. This is a tease, not a commitment; the
 ordering is reactive to what beta users surface.
 
-## Recently shipped
+## Now
 
+Hydrate has become a platform layer: memory, orchestration
+(adversarial multi-agent, MCP-driven), token reduction and
+cross-agent coordination via Peernet.
+
+- **Cross-runtime support.** The memory layer runs across
+  Claude Code, Codex, Cursor, Antigravity, the Mistral Vibe fork
+  and GitHub Copilot. IBM Bob is in development.
+- **Orchestration.** Adversarial multi-agent workflows, driven
+  through MCP, coordinate work across agents.
+- **Peernet.** Opt-in, local-first agent-to-agent relay. Same-
+  machine relay works today; cross-device relay is on the
+  roadmap.
 - **Dashboard SSE-everywhere.** Every dashboard pane (sessions,
   facts, working memory, dreams, packs, copilot, MCP-recent,
   retrievals, overview, project detail, orchestration, fatigue,
   displacement) pushes updates live; no manual refresh.
 - **Re-imagined homepage.** The dashboard's `/` view answers
-  "what's happening right now and where do I look next" — five
+  "what's happening right now and where do I look next": five
   KPI cards, project activity ribbon, memory pulse, recent
   timeline, status footer.
 - **Fatigue signals.** The status line shows a context-utilisation
@@ -25,10 +37,12 @@ ordering is reactive to what beta users surface.
 ## Up next
 
 - **Multi-vendor MCP** — same memory surface across more clients;
-  already works in Cursor / Cline / Zed / Windsurf / Gemini CLI;
+  already works in Cursor / Cline / Zed / Windsurf;
   more landing as their MCP support matures.
 - **Cross-machine sync** — git-backed personal sync between your
   laptop and your desktop, already in Pro; team sync expanding.
+- **Cross-device Peernet** — extending the local-first relay
+  beyond a single machine to agents on your other devices.
 - **PreToolUse re-inject** — narrower context refresh right
   before a tool call, complementary to the per-prompt injection.
 - **Compress survival** — better behaviour when Claude Code
@@ -37,8 +51,8 @@ ordering is reactive to what beta users surface.
 
 ## Further out
 
-- Plug-in MCP tools beyond memory — doctor and pack tooling
-  are already callable; expanding the surface as MCP clients
+- Plug-in MCP tools beyond memory. Doctor and pack tooling
+  are already callable; the surface expands as MCP clients
   mature.
 - An offline-only mode for environments where even
   `gethydrate.dev`'s update check is undesirable.
