@@ -1,0 +1,16 @@
+{
+  "arm": "arm-a-vanilla",
+  "output": {
+    "loc": 807,
+    "bytes": 29346,
+    "files": 3
+  },
+  "singleshot": {
+    "cost_usd": 0.7816449999999999,
+    "input_tokens": 3311,
+    "output_tokens": 17462,
+    "cache_read_tokens": 339325,
+    "cache_creation_tokens": 25314
+  },
+  "wall_seconds": 188
+}

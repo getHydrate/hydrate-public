@@ -1,0 +1,16 @@
+{
+  "arm": "arm-b-ponytail",
+  "output": {
+    "loc": 253,
+    "bytes": 10602,
+    "files": 1
+  },
+  "singleshot": {
+    "cost_usd": 0.3389195,
+    "input_tokens": 5693,
+    "output_tokens": 6827,
+    "cache_read_tokens": 92034,
+    "cache_creation_tokens": 15002
+  },
+  "wall_seconds": 74
+}
