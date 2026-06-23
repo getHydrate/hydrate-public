@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- Reference build for the benchmark figure set. Render to PNG:
+     chromium --headless --disable-gpu --force-device-scale-factor=2 \
+       --window-size=1200,675 --screenshot=figure-01-scoreboard.png figure-01-scoreboard.html
+     Copy the <style> scaffold for figures 02-05. Data is pinned in BRIEF.md. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --ponytail:#475569; --baseline:#cbd5e1;
+    --win:#16a34a; --tie:#d97706; --held:#2563eb; --trade:#94a3b8;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:28px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px}
+  h1 span{color:var(--hydrate)}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .tiles{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .tile{border:1px solid var(--line);border-radius:16px;padding:26px 24px;
+        display:flex;flex-direction:column;gap:12px;background:#fff;position:relative;overflow:hidden}
+  .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+  .tile h2{font-size:13px;font-weight:700;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+  .val{font-size:46px;font-weight:800;line-height:1;color:var(--accent)}
+  .desc{font-size:15px;color:var(--ink);line-height:1.4;margin-top:auto}
+  .tie{--accent:var(--tie)} .held{--accent:var(--held)} .win{--accent:var(--win)}
+  .footer{border-radius:16px;padding:22px 28px;background:linear-gradient(90deg,var(--hydrate),#0f766e);
+          color:#fff;font-size:22px;font-weight:700;text-align:center;letter-spacing:.2px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1><span>Hydrate</span> &times; Ponytail — benchmark scoreboard</h1>
+        <div class="sub">Reproduced on Ponytail's own harness (Claude Haiku) + Hydrate's cross-session reuse bench</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="tiles">
+      <div class="tile tie">
+        <h2>Safety</h2>
+        <div class="val">100%</div>
+        <div class="desc">Reproduced exactly. A naive one-liner prompt drops to 94.4%.</div>
+      </div>
+      <div class="tile tie">
+        <h2>Backend LOC</h2>
+        <div class="val">&minus;6%</div>
+        <div class="desc">A tie with Ponytail, both ~6% under baseline.</div>
+      </div>
+      <div class="tile held">
+        <h2>Frontend LOC</h2>
+        <div class="val">held</div>
+        <div class="desc">Ponytail &minus;64%; Hydrate keeps higher-fidelity UI by design.</div>
+      </div>
+      <div class="tile win">
+        <h2>Cross-session reuse</h2>
+        <div class="val">1.00</div>
+        <div class="desc">Hydrate reuses every time. Ponytail can't play — no memory.</div>
+      </div>
+    </div>
+    <div class="footer">Hydrate&nbsp;+&nbsp;Ponytail — the strongest combination</div>
+  </div>
+</body>
+</html>
