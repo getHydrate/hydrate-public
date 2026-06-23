@@ -147,12 +147,59 @@ former, which is the whole point: do not pay fleet prices for a one-file build.
 
 ## Benchmarks
 
-The concision claim is measured, not asserted. The benchmark in
-[`benchmarks/weather-bench`](benchmarks/weather-bench) builds one fixed task (a
-weather dashboard app) many different ways and scores each against the same
-12-point functional checklist. **Every run used Claude Opus 4.8**, so the model is
-held constant across the table. Every build scored 12/12, so the cost differences
-below are cost at equal quality, not quality differences.
+There are two benchmarks here, measuring two different things, plus the full grid
+in [**BENCHMARKS.md**](BENCHMARKS.md).
+
+### 1. Reproducing Ponytail's agentic benchmark
+
+Hydrate ran [Ponytail's](https://github.com/DietrichGebert/ponytail) own agentic
+benchmark — its harness, its scorers, the `/hydrate-yagni` directive added as one
+more arm — to check its published results first-hand before claiming anything. They
+reproduced. **All numbers below are on Claude Haiku** (Ponytail's primary benchmark
+model), so they are not directly comparable to the Opus weather-app figures further
+down.
+
+| Measure | Baseline | Ponytail | Hydrate `/hydrate-yagni` | Naive one-liner | Runs/arm |
+|---|---|---|---|---|---|
+| **Safety** (% safe) | 100% | 100% | **100%** | **94.4%** | 90 |
+| **Backend** (median LOC) | 34 | 32 | **32** (tie) | 29 | 60 |
+| **Frontend** (median LOC) | 256 | **93** | ~256 (held) | 100 | 30 |
+
+- **Safety reproduced exactly.** A naive "follow YAGNI, prefer one-liners" prompt
+  drops to 94.4% safe, failing on the same task and model Ponytail published.
+  Hydrate's guarded directive holds 100% — it never drops a guard or error check to
+  shorten code. This is Ponytail's core safety argument, and it holds.
+- **Backend code is a tie** — Ponytail and the Hydrate directive both land ~6% under
+  baseline.
+- **Ponytail wins frontend line count**, and that is a deliberate trade: Hydrate
+  holds higher-fidelity UI (interface design is its own step) rather than golf
+  components away. Chasing the frontend number directly made the build *worse* in a
+  test, so it was reverted. Full detail in [BENCHMARKS.md](BENCHMARKS.md).
+
+**Where Hydrate wins: cross-session reuse.** Ponytail makes a build lean; Hydrate
+makes the *next* session reuse what the last one built instead of rebuilding it. A
+two-phase benchmark seeds a repo with Ponytail-built components, clears context, then
+asks a fresh agent for a feature that needs them — and scores whether it reuses them
+(early pilot, 18 runs, Haiku):
+
+| Arm | Reuse rate | Avg new LOC |
+|---|---|---|
+| Cold (no memory) | 0.67 | 196 |
+| Hydrate | **1.00** | 247 |
+| **Hydrate + Ponytail** | **1.00** | **207** |
+
+Without memory a fresh agent rebuilds — one in three cold runs shipped a duplicate of
+a component the repo already had. With Hydrate it reused every time. **Hydrate +
+Ponytail is the strongest setup**: memory delivers the reuse guarantee, Ponytail keeps
+the new code lean. Ponytail alone cannot play this axis — it has no cross-session
+memory. Full method and caveats in [**BENCHMARKS.md**](BENCHMARKS.md).
+
+### 2. Single-shot concision: weather-bench
+
+A separate benchmark in [`benchmarks/weather-bench`](benchmarks/weather-bench) builds
+one fixed task (a weather dashboard app) many different ways and scores each against
+the same 12-point functional checklist. **Every run used Claude Opus 4.8**, and every
+build scored 12/12, so the cost differences below are cost at equal quality.
 
 | How the task was run | Cost | Lines of code |
 |----------------------|-----:|--------------:|
@@ -161,12 +208,6 @@ below are cost at equal quality, not quality differences.
 | Plain single shot, no concision directive | $0.72 – $1.53 | ~736 – 844 |
 | Full multi-agent orchestration | $7 – $11 | varies |
 
-Orchestration costs far more **by definition**: it runs several agents across
-multiple rounds and carries the overhead of coordinating them, so it spends many
-more tokens than a single shot. That buys adversarial review and a converged
-design, which is worth it for hard, expensive-to-get-wrong work — not for a task a
-single shot already gets right.
-
 - **The YAGNI directive alone cut a build by about 78%** in cost (from $1.53 to
   $0.34), with the model, prompt and environment all held constant — only the
   directive changed.
@@ -174,21 +215,10 @@ single shot already gets right.
   and 12/12, the smallest output in the whole benchmark.
 - The full span from a lean shot to an orchestration is roughly **20x at the same
   rubric score**, which is why matching the tier to the task matters.
-- **Ponytail is a reference, not a rival — and Hydrate has since reproduced its
-  benchmark.** On this one weather task Better Stack's plugin built the app for
-  $0.34 at 253 lines, the same band our directive landed in. Beyond this n=1 task,
-  Hydrate ran ponytail's own multi-task agentic benchmark and reproduced it: the
-  safety finding holds exactly (a naive "write one-liners" prompt drops to 94.4%
-  safe; the guarded directive stays at 100%), and backend code is a tie. Ponytail
-  wins frontend line count; Hydrate wins cross-session reuse; and the two together
-  are the strongest combination. The full grid is in [**BENCHMARKS.md**](BENCHMARKS.md);
-  the single-task relation is in
-  [Relation to Ponytail](benchmarks/weather-bench#relation-to-ponytail).
 
-Caveat: most figures are single runs; the 78% headline is the mean of three. The
-benchmark isolates *concision* on a greenfield build, not memory or
-long-running-project behaviour. Full method, the verbatim prompt, the per-arm
-table and the headless-vs-interactive analysis are in the
+Caveat: most weather-bench figures are single runs; the 78% headline is the mean of
+three. It isolates *concision* on a greenfield build, not memory. Full method, the
+verbatim prompt, the per-arm table and the headless-vs-interactive analysis are in the
 [benchmark README](benchmarks/weather-bench).
 
 ## Use the directive without the command
