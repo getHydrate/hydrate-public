@@ -1,4 +1,4 @@
-# Hydrate slash commands (MIT)
+# Hydrate YAGNI slash commands (MIT)
 
 Two Claude Code slash commands that apply Hydrate's concision discipline to a
 single session, without running an orchestration fleet. Unlike the rest of this
@@ -147,6 +147,7 @@ below are cost at equal quality, not quality differences.
 | How the task was run | Cost | Lines of code |
 |----------------------|-----:|--------------:|
 | YAGNI single shot (the `/hydrate-yagni` tier) | **$0.34 – $0.44** | ~217 – 297 |
+| Ponytail plugin (Better Stack, reference) | **$0.34** | 253 |
 | Plain single shot, no concision directive | $0.72 – $1.53 | ~736 – 844 |
 | Full multi-agent orchestration | $7 – $11 | varies |
 

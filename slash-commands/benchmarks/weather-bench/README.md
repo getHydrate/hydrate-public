@@ -70,14 +70,11 @@ multi-agent orchestration). Lower is better for cost and lines of code (LOC).
 | **A** vanilla | single shot, headless, no directive | no | $0.78 | 807 | 3 | 12/12 |
 | **v5** | single shot, interactive, no directive | no | $1.24 | 736 | 1 | 12/12 |
 | **v5h** | single shot, headless, no directive | no | $1.53 | 740 | 1 | 12/12 |
-| **C-3** | orchestration, develop only | yes | $7.17 | 506 | 1 | 12/12 |
-| **C-2** | full orchestration (design + develop) | yes | $10.48 | 841 | 1 | 12/12 |
-| **C-1** | full orchestration (design + develop) | yes | $11.40 | 396 | 1 | 12/12 |
 
 Per-arm token, byte and timing detail is in [`results/metrics.json`](results/metrics.json).
 Representative screenshots are in [`results/`](results/).
 
-Three groups, and what each shows:
+Two groups, and what each shows:
 
 - **YAGNI single shots ($0.34–0.44, ~217–297 LOC).** A directive that says "build
   only what the task needs" produces a complete 12/12 app in about a third of the
@@ -87,11 +84,15 @@ Three groups, and what each shows:
   the model gold-plates. The vanilla run added precipitation charts,
   temperature-range bars and its own "Skycast" branding that nobody asked for,
   and split one page into three files. None of it scored a single extra point.
-- **Orchestration ($7–11).** A full design-and-develop fleet with adversarial
-  cross-family review. Same rubric score, but it caught real defects a single shot
-  is never checked for (concurrency races, a self-contradictory data contract).
-  That verification is what the cost buys; it is worth it for hard, expensive
-  work, not for a weather app.
+
+Above both sits a third, much heavier tier these slash commands are not: Hydrate's
+full design-and-develop **orchestration**, which built the same app for roughly
+$7–11. It is not in the table because this benchmark is about the single-shot
+concision lever. Orchestration buys adversarial cross-family review that catches
+defects a single shot is never checked for (concurrency races, a
+self-contradictory data contract), so it earns its cost on hard,
+expensive-to-get-wrong work, not on a weather app. See *When to use which* in the
+[slash-commands README](../../README.md).
 
 ## The headline numbers
 
@@ -104,9 +105,10 @@ Three groups, and what each shows:
   lines, 12/12 — the smallest output in the whole benchmark. The concision also
   showed up behaviourally, not just on cost: the model deleted a dead API call it
   had written once it realised the endpoint did not support that lookup.
-- **The full cost span at one quality level is roughly 20x.** That span is the
-  argument for matching the tier to the task instead of always reaching for the
-  most powerful one.
+- **The cost span at one quality level is large.** Within single shots it is over
+  4x ($0.34 to $1.53); counting the orchestration tier above (around $7–11) it is
+  roughly 20x. That span is the argument for matching the tier to the task instead
+  of always reaching for the most powerful one.
 
 ## Headless vs interactive (TUI), and why it does not matter
 
