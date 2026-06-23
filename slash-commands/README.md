@@ -20,6 +20,22 @@ Both commands call `hydrate yagni-block` for the canonical directive text when t
 Hydrate binary is present, and fall back to a verbatim copy of that directive when
 it is not, so they work standalone.
 
+## Background and credit
+
+The idea for these commands, and the task the benchmark uses, comes from Better
+Stack's video [*This Claude Code Plugin Writes 94% Less Code
+(ponytail)*](https://www.youtube.com/watch?v=2xuFcmUAQUc). It demonstrates
+**ponytail**, a Claude Code plugin that enforces a concision discipline so the
+model writes far less code for the same result. That video gave us two things: the
+weather-app prompt we benchmark with, and the idea of pulling the same concision
+discipline out of Hydrate's orchestrator and into a single, installable directive.
+
+These commands are our take on that idea. The difference is provenance: ponytail is
+a purpose-built plugin, whereas our directives are the *exact* text Hydrate's
+orchestration engine already injects into its own worker agents (see below). The
+benchmark runs ponytail as a head-to-head reference, and it and our directive land
+at the same cost and output size.
+
 ## Where these directives come from
 
 These are not prompts written for a blog post. They are the exact directives
@@ -141,6 +157,10 @@ below are cost at equal quality, not quality differences.
   and 12/12, the smallest output in the whole benchmark.
 - The full span from a lean shot to an orchestration is roughly **20x at the same
   rubric score**, which is why matching the tier to the task matters.
+- **Ponytail is in the benchmark as a head-to-head reference.** Better Stack's
+  plugin built the app for $0.34 at 253 lines, the same band our directive lands
+  in. Two routes to the same place: a purpose-built plugin, or a directive lifted
+  from Hydrate's orchestrator.
 
 Caveat: most figures are single runs; the 78% headline is the mean of three. The
 benchmark isolates *concision* on a greenfield build, not memory or
