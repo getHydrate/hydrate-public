@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/banner.png" alt="Hydrate: the platform layer for your coding agents" width="820">
+  <img src="assets/logo.png" alt="Hydrate: the platform layer for your coding agents" width="360">
 </p>
 
 # Hydrate
