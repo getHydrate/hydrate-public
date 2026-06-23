@@ -1,21 +1,24 @@
 # Install Hydrate
 
-Hydrate runs as a local daemon plus a Claude Code hook pair plus an
-MCP server. The install script wires all three. This guide covers
-the supported platforms, the MCP snippets for non-Claude-Code
-clients, and the troubleshooting paths if something is off.
+Hydrate is a local-first platform layer for coding agents: shared
+memory, adversarial multi-agent orchestration, token reduction, and
+cross-agent coordination (Peernet). It runs as a local daemon, a set
+of runtime hook shims, and an MCP server. The install script wires
+all of them. This guide covers the supported platforms, the MCP
+snippets for clients that connect that way, and the troubleshooting
+paths if something is off.
 
 The canonical install page is
-[gethydrate.dev/install](https://gethydrate.dev/install) — the
+[gethydrate.dev/install](https://gethydrate.dev/install). The
 snippets here match that page; if they ever drift, the website
 wins.
 
 The fastest path for any user is the **First-steps builder** at
 [gethydrate.dev/install/first-steps](https://gethydrate.dev/install/first-steps).
 Pick your settings in the form and it emits a single shell script
-that activates your license, initialises your project, optionally
+that activates your licence, initialises your project, optionally
 imports a hydration pack, optionally bootstraps a team-canon git
-repo, and runs `hydrate doctor` at the end.
+repo, then runs `hydrate doctor` at the end.
 
 ## macOS
 
@@ -44,14 +47,14 @@ The script:
 2. Downloads the latest tarball from
    [Releases](https://github.com/getHydrate/hydrate-public/releases).
 3. Installs the binaries to `~/.local/bin/`:
-   - `hydrate` — management CLI
-   - `hydrate-server` — local daemon (HTTP API + SSE dashboard)
-   - `hydrate-mcp` — MCP server for Claude Desktop, Cursor, Cline, Zed, Gemini CLI
-   - `claude-context` — Claude Code `UserPromptSubmit` hook
-   - `claude-capture` — Claude Code `Stop` hook
-   - `claude-precompact`, `claude-session-start`, `claude-tool-{pre,post}` — additional hook shims
-   - `codex-context`, `codex-capture`, `codex-session-start` — Codex equivalents
-   - `vibe-*` — Mistral Vibe shims
+   - `hydrate`: management CLI
+   - `hydrate-server`: local daemon (HTTP API + SSE dashboard)
+   - `hydrate-mcp`: MCP server for Claude Desktop, Cursor, Cline, Zed, and Codex
+   - `claude-context`: Claude Code `UserPromptSubmit` hook
+   - `claude-capture`: Claude Code `Stop` hook
+   - `claude-precompact`, `claude-session-start`, `claude-tool-{pre,post}`: additional hook shims
+   - `codex-context`, `codex-capture`, `codex-session-start`: Codex equivalents
+   - `vibe-*`: Mistral Vibe shims (fork)
 4. Adds the hooks to `~/.claude/settings.json` (idempotent).
 5. Starts `hydrate-server` in the background and writes its port +
    API key to `~/.hydrate/server.{port,key}`.
@@ -63,16 +66,16 @@ hydrate doctor
 ```
 
 `doctor` runs 16 checks covering PATH, hook registration, daemon
-liveness, key file permissions, MCP wiring, and Claude Code
-settings. Anything red has a one-line fix beside it.
+liveness, key file permissions, MCP wiring, and runtime settings.
+Anything red has a one-line fix beside it.
 
 ### First Claude Code session in a project
 
 The first time you open Claude Code inside a project that already
 has a `CLAUDE.md`, Hydrate runs `hydrate dehydrate --mode=full`
 once in the background to extract structured facts from the file
-into the local store. The subprocess is detached — session start
-is never blocked — and writes its log to
+into the local store. The subprocess is detached, so session start
+is never blocked, and it writes its log to
 `~/.hydrate/logs/auto-prime.log`. A marker at
 `~/.hydrate/auto-primed/<project-slug>` ensures it only runs once
 per project; delete the marker to retry.
@@ -120,7 +123,7 @@ Each release publishes a Windows ZIP at
 [Releases](https://github.com/getHydrate/hydrate-public/releases/latest):
 
 - `hydrate-v0.4.0-windows-amd64.zip` (Intel / AMD)
-- `hydrate-v0.4.0-windows-arm64.zip` (ARM)
+- `hydrate-v0.4.0-windows-arm64.zip` (Arm)
 
 Unzip into a directory on `%PATH%` (for example
 `%LOCALAPPDATA%\Hydrate\bin\`), then in PowerShell:
@@ -130,14 +133,15 @@ hydrate setup     # interactive first-run wizard
 hydrate doctor
 ```
 
-A signed MSI installer is on the roadmap — track
+A signed MSI installer is on the roadmap; track
 [the MSI tracking issue](https://github.com/getHydrate/hydrate-public/issues)
 for status. Until then the ZIP is the supported path.
 
 WSL users can take either the Linux Homebrew or install-script
-path instead — recommended if you want tmux-based orchestrations.
+path instead, which is recommended if you want tmux-based
+orchestrations.
 
-## MCP server setup (non-Claude-Code clients)
+## MCP server setup
 
 Hydrate ships a Model Context Protocol server (`hydrate-mcp`) so
 the same facts surface in any MCP-capable client. Pick your tool:
@@ -208,20 +212,6 @@ Add to `~/.codeium/windsurf/mcp_config.json`:
 }
 ```
 
-### Gemini CLI
-
-`~/.gemini/mcp.json`:
-
-```json
-{
-  "servers": {
-    "hydrate": {
-      "command": "hydrate-mcp"
-    }
-  }
-}
-```
-
 `hydrate install-hooks` adds the Claude Desktop entry automatically
 on macOS. For the other clients, paste the snippet above.
 
@@ -249,7 +239,7 @@ The most common ones:
 | `MCP not wired` | re-run `hydrate install-hooks --mcp` |
 
 If `doctor` reports something that isn't on this list, run
-`hydrate doctor --report` — it copies a pre-filled GitHub issue
+`hydrate doctor --report`. It copies a pre-filled GitHub issue
 URL to your clipboard with the full diagnostic output. Paste that
 into a new issue and we'll triage.
 
@@ -265,7 +255,7 @@ rm -rf ~/.hydrate/
 Then edit `~/.claude/settings.json` and remove the
 `claude-context` / `claude-capture` hook entries.
 
-A first-class `hydrate uninstall --purge` subcommand is in the
+A first-class `hydrate uninstall --purge` subcommand is on the
 roadmap.
 
 ## Where things live
@@ -291,5 +281,5 @@ roadmap.
 `~/.hydrate/treesitter/` directory and no separate installer. The
 grammars ship in the `hydrate` binary, which is ~50 MB as a result.)
 
-The DB is a single SQLite file at `~/.hydrate/hydrate.db` — back
+The DB is a single SQLite file at `~/.hydrate/hydrate.db`; back
 it up the same way you'd back up any other file.
