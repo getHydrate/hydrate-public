@@ -33,8 +33,17 @@ discipline out of Hydrate's orchestrator and into a single, installable directiv
 These commands are our take on that idea. The difference is provenance: ponytail is
 a purpose-built plugin, whereas our directives are the *exact* text Hydrate's
 orchestration engine already injects into its own worker agents (see below). The
-benchmark runs ponytail as a head-to-head reference, and it and our directive land
-at the same cost and output size.
+weather-app benchmark runs ponytail as a head-to-head reference, and it and our
+directive land at the same cost and output size.
+
+Since then, Hydrate has gone further and **run ponytail's own agentic benchmark**
+end to end — its harness, its scorers — and reproduced its published results:
+ponytail's safety finding holds exactly, and on backend code a single concision
+directive ties the plugin. Ponytail wins on frontend line count (a deliberate
+trade Hydrate makes for higher-fidelity UI), and on a benchmark Hydrate built for
+*cross-session* reuse, Hydrate — and Hydrate + ponytail together — win on the axis
+ponytail does not target. The full, honest comparison, including where Hydrate
+loses, is in [**BENCHMARKS.md**](BENCHMARKS.md).
 
 ## Where these directives come from
 
@@ -165,12 +174,15 @@ single shot already gets right.
   and 12/12, the smallest output in the whole benchmark.
 - The full span from a lean shot to an orchestration is roughly **20x at the same
   rubric score**, which is why matching the tier to the task matters.
-- **Ponytail is in the benchmark as a reference, not a rival.** Better Stack's
-  plugin built the app for $0.34 at 253 lines — the same band our directive landed
-  in *on this one task*. We are not claiming a prompt equals the plugin: this is
-  n=1, and Ponytail is an always-on skill with rigorous multi-task benchmarks of
-  its own. We agree with its creator that naive "write one-liners" prompting is
-  unsafe, which is exactly why our directive keeps every correctness guard. See
+- **Ponytail is a reference, not a rival — and Hydrate has since reproduced its
+  benchmark.** On this one weather task Better Stack's plugin built the app for
+  $0.34 at 253 lines, the same band our directive landed in. Beyond this n=1 task,
+  Hydrate ran ponytail's own multi-task agentic benchmark and reproduced it: the
+  safety finding holds exactly (a naive "write one-liners" prompt drops to 94.4%
+  safe; the guarded directive stays at 100%), and backend code is a tie. Ponytail
+  wins frontend line count; Hydrate wins cross-session reuse; and the two together
+  are the strongest combination. The full grid is in [**BENCHMARKS.md**](BENCHMARKS.md);
+  the single-task relation is in
   [Relation to Ponytail](benchmarks/weather-bench#relation-to-ponytail).
 
 Caveat: most figures are single runs; the 78% headline is the mean of three. The

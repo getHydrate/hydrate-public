@@ -110,6 +110,9 @@ axis — memory across sessions — and the two together are stronger than eithe
 
 ---
 
-*Methodology, sample sizes, and the full internal scorecard (including retrieval accuracy,
-compression, and latency benchmarks) are maintained alongside the Hydrate source. The
-cross-session reuse figures are an early pilot and will be updated as the benchmark is scaled.*
+*For the single-shot concision benchmark behind the `/hydrate-yagni` command — a weather
+dashboard built many ways and scored against a fixed rubric — see
+[`benchmarks/weather-bench`](benchmarks/weather-bench). Methodology, sample sizes, and the
+full internal scorecard (including retrieval accuracy, compression, and latency benchmarks)
+are maintained alongside the Hydrate source. The cross-session reuse figures are an early
+pilot and will be updated as the benchmark is scaled.*

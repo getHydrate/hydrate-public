@@ -111,27 +111,29 @@ expensive-to-get-wrong work, not on a weather app. See *When to use which* in th
 [Ponytail](https://github.com/DietrichGebert/ponytail) is a purpose-built
 concision skill for AI coding agents — an always-on decision-ladder that fires
 before each generation. Its creator has benchmarked it thoroughly (multiple tasks,
-10–30 runs, several models, safety-scored, reproducible), and that work is worth
-reading. We are not trying to win a concision-tool benchmark, and we want to be
-straight about where we stand.
+10–30 runs, several models, safety-scored, reproducible). This weather-app benchmark
+is a single greenfield task (n=1); to compare properly, Hydrate has **since run
+ponytail's own agentic benchmark end to end** — its harness, its scorers — and the
+full result lives in [**BENCHMARKS.md**](../../BENCHMARKS.md). The short version:
 
-- **We agree with Ponytail's safety finding.** Its benchmarks show a naive "YAGNI
-  plus write one-liners" prompt is inconsistent and can *reduce safety* (it drops
-  below an unguarded baseline in their agentic test). That is real, and our
-  directive is built specifically to avoid it: it forbids dropping any guard or
-  error check to shorten code, and it mandates building seams the brief requires.
-  Ours is a concision-*with-correctness* contract, not "write less".
-- **Our benchmark is far smaller than theirs.** This is n=1 on a single greenfield
-  app; theirs is multi-task, multi-run, multi-model. The arm-B result here says
-  "on this one task, a directive and the plugin landed in the same cost band" — it
-  is **not** a general claim that a prompt equals the plugin. A pasted directive is
-  per-prompt and can drift across a long session; an always-on skill cannot.
-- **Different goals.** Ponytail is a dedicated concision tool. These commands are a
-  zero-install convenience that exposes the directive Hydrate's orchestrator
-  already uses internally; Hydrate's actual product is cross-session memory and
-  orchestration, not single-shot concision. We cite Ponytail as the prior art that
-  inspired this, and point anyone wanting a rigorous concision comparison to
-  [their benchmarks](https://github.com/DietrichGebert/ponytail/tree/main/benchmarks).
+- **Ponytail's safety finding is reproduced exactly.** Running its suite, a naive
+  "YAGNI plus write one-liners" prompt drops to 94.4% safe — and the failures land
+  on the exact same task and model ponytail published. Hydrate's guarded directive
+  stays at 100%: it forbids dropping any guard or error check to shorten code, and
+  mandates building seams the brief requires. Ours is a concision-*with-correctness*
+  contract, not "write less".
+- **Backend code is a tie; ponytail wins frontend line count.** On backend tasks
+  ponytail and Hydrate's directive land at the same median, ~6% under baseline. On
+  frontend tasks ponytail reduces line count much more aggressively. That is a
+  deliberate trade: Hydrate holds higher-fidelity UI (design is its own step) rather
+  than golf the components away — and a test that chased the frontend number made
+  the build worse, so it was reverted. Details in BENCHMARKS.md.
+- **Hydrate wins a different axis — and the two combine.** Ponytail makes a build
+  lean; Hydrate makes the *next* session reuse what the last one built instead of
+  rebuilding it. On a cross-session reuse benchmark, Hydrate (and Hydrate + ponytail)
+  reuse existing components every time where a no-memory baseline rebuilds them.
+  Ponytail is a dedicated concision tool; Hydrate's product is cross-session memory
+  and orchestration. They are complementary, and running both is the strongest setup.
 
 ## The headline numbers
 
@@ -181,7 +183,8 @@ exact headless floor.
   general, but these specific numbers are not a guarantee for every workload.
 - **Greenfield by design.** "Build me a weather app" has no prior code to remember,
   so this benchmark isolates *concision*. It is not a test of memory or of
-  long-running projects.
+  long-running projects — that axis is measured separately by the cross-session
+  reuse benchmark in [BENCHMARKS.md](../../BENCHMARKS.md).
 
 ## Files here
 
