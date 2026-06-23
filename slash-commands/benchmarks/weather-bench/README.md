@@ -55,10 +55,15 @@ here is 12/12.
 
 ## Results
 
-All single-shot arms ran on the same model (Claude Opus 4.8). The only things that
+**Every run in this benchmark used Claude Opus 4.8** — single shots and
+orchestration alike. Holding the model fixed is the point: the only things that
 varied were the prompt (with or without the YAGNI directive), the environment
 (which plugins were loaded), and how the task was run (a single shot versus a
 multi-agent orchestration). Lower is better for cost and lines of code (LOC).
+
+(Note that **arm B is our own Opus run of Ponytail in this harness**, not
+Ponytail's published figures — Ponytail's own benchmarks primarily use Claude
+Haiku 4.5, so its headline numbers are not directly comparable to ours.)
 
 | Arm | How it was run | YAGNI? | Cost | LOC | Files | Score |
 |-----|----------------|:------:|-----:|----:|:-----:|:-----:|
@@ -78,8 +83,11 @@ Two groups, and what each shows:
 
 - **YAGNI single shots ($0.34–0.44, ~217–297 LOC).** A directive that says "build
   only what the task needs" produces a complete 12/12 app in about a third of the
-  code. **Ponytail (arm B, the Better Stack plugin) sits in this band too** — a
-  purpose-built plugin and our orchestrator-derived directive reach the same place.
+  code. **Ponytail (arm B, the Better Stack plugin) landed in this band too on
+  this task.** We are not claiming a directive equals the plugin in general: this
+  is n=1 on one greenfield app, and Ponytail is an always-on skill that enforces
+  its decision-ladder every turn where a pasted directive is per-prompt and can
+  drift. See [Relation to Ponytail](#relation-to-ponytail) for the honest version.
 - **Plain single shots ($0.72–1.53, ~736–844 LOC).** With no concision directive
   the model gold-plates. The vanilla run added precipitation charts,
   temperature-range bars and its own "Skycast" branding that nobody asked for,
@@ -88,11 +96,42 @@ Two groups, and what each shows:
 Above both sits a third, much heavier tier these slash commands are not: Hydrate's
 full design-and-develop **orchestration**, which built the same app for roughly
 $7–11. It is not in the table because this benchmark is about the single-shot
-concision lever. Orchestration buys adversarial cross-family review that catches
-defects a single shot is never checked for (concurrency races, a
+concision lever, and because **orchestration costs more tokens by definition** —
+it runs several agents (design author, critic, implementer, reviewer, verifier)
+across multiple rounds, and carries the coordination overhead of managing them
+(re-reading shared context each round, status polling, the driver loop). That is
+structural, not waste: orchestration buys adversarial cross-family review that
+catches defects a single shot is never checked for (concurrency races, a
 self-contradictory data contract), so it earns its cost on hard,
 expensive-to-get-wrong work, not on a weather app. See *When to use which* in the
 [slash-commands README](../../README.md).
+
+## Relation to Ponytail
+
+[Ponytail](https://github.com/DietrichGebert/ponytail) is a purpose-built
+concision skill for AI coding agents — an always-on decision-ladder that fires
+before each generation. Its creator has benchmarked it thoroughly (multiple tasks,
+10–30 runs, several models, safety-scored, reproducible), and that work is worth
+reading. We are not trying to win a concision-tool benchmark, and we want to be
+straight about where we stand.
+
+- **We agree with Ponytail's safety finding.** Its benchmarks show a naive "YAGNI
+  plus write one-liners" prompt is inconsistent and can *reduce safety* (it drops
+  below an unguarded baseline in their agentic test). That is real, and our
+  directive is built specifically to avoid it: it forbids dropping any guard or
+  error check to shorten code, and it mandates building seams the brief requires.
+  Ours is a concision-*with-correctness* contract, not "write less".
+- **Our benchmark is far smaller than theirs.** This is n=1 on a single greenfield
+  app; theirs is multi-task, multi-run, multi-model. The arm-B result here says
+  "on this one task, a directive and the plugin landed in the same cost band" — it
+  is **not** a general claim that a prompt equals the plugin. A pasted directive is
+  per-prompt and can drift across a long session; an always-on skill cannot.
+- **Different goals.** Ponytail is a dedicated concision tool. These commands are a
+  zero-install convenience that exposes the directive Hydrate's orchestrator
+  already uses internally; Hydrate's actual product is cross-session memory and
+  orchestration, not single-shot concision. We cite Ponytail as the prior art that
+  inspired this, and point anyone wanting a rigorous concision comparison to
+  [their benchmarks](https://github.com/DietrichGebert/ponytail/tree/main/benchmarks).
 
 ## The headline numbers
 

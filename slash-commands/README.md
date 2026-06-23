@@ -141,7 +141,8 @@ former, which is the whole point: do not pay fleet prices for a one-file build.
 The concision claim is measured, not asserted. The benchmark in
 [`benchmarks/weather-bench`](benchmarks/weather-bench) builds one fixed task (a
 weather dashboard app) many different ways and scores each against the same
-12-point functional checklist. Every build scored 12/12, so the cost differences
+12-point functional checklist. **Every run used Claude Opus 4.8**, so the model is
+held constant across the table. Every build scored 12/12, so the cost differences
 below are cost at equal quality, not quality differences.
 
 | How the task was run | Cost | Lines of code |
@@ -151,6 +152,12 @@ below are cost at equal quality, not quality differences.
 | Plain single shot, no concision directive | $0.72 – $1.53 | ~736 – 844 |
 | Full multi-agent orchestration | $7 – $11 | varies |
 
+Orchestration costs far more **by definition**: it runs several agents across
+multiple rounds and carries the overhead of coordinating them, so it spends many
+more tokens than a single shot. That buys adversarial review and a converged
+design, which is worth it for hard, expensive-to-get-wrong work — not for a task a
+single shot already gets right.
+
 - **The YAGNI directive alone cut a build by about 78%** in cost (from $1.53 to
   $0.34), with the model, prompt and environment all held constant — only the
   directive changed.
@@ -158,10 +165,13 @@ below are cost at equal quality, not quality differences.
   and 12/12, the smallest output in the whole benchmark.
 - The full span from a lean shot to an orchestration is roughly **20x at the same
   rubric score**, which is why matching the tier to the task matters.
-- **Ponytail is in the benchmark as a head-to-head reference.** Better Stack's
-  plugin built the app for $0.34 at 253 lines, the same band our directive lands
-  in. Two routes to the same place: a purpose-built plugin, or a directive lifted
-  from Hydrate's orchestrator.
+- **Ponytail is in the benchmark as a reference, not a rival.** Better Stack's
+  plugin built the app for $0.34 at 253 lines — the same band our directive landed
+  in *on this one task*. We are not claiming a prompt equals the plugin: this is
+  n=1, and Ponytail is an always-on skill with rigorous multi-task benchmarks of
+  its own. We agree with its creator that naive "write one-liners" prompting is
+  unsafe, which is exactly why our directive keeps every correctness guard. See
+  [Relation to Ponytail](benchmarks/weather-bench#relation-to-ponytail).
 
 Caveat: most figures are single runs; the 78% headline is the mean of three. The
 benchmark isolates *concision* on a greenfield build, not memory or
