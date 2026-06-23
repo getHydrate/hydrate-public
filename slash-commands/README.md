@@ -1,5 +1,19 @@
 # Hydrate YAGNI slash commands (MIT)
 
+> **TL;DR**
+> - Two MIT-licensed Claude Code slash commands — `/hydrate-yagni` (lean build) and
+>   `/hydrate-yagni-spec` (lean spec) — lifted verbatim from Hydrate's orchestrator.
+> - **Inspired by [Ponytail](https://github.com/DietrichGebert/ponytail).** Hydrate
+>   ran Ponytail's own benchmark and reproduced it: its **safety** result holds
+>   exactly (a naive one-liner prompt drops to 94.4% safe; the guarded directive
+>   stays 100%), and **backend** code is a tie.
+> - **Ponytail wins frontend line count** — a deliberate trade; Hydrate keeps
+>   higher-fidelity UI instead of golfing it away.
+> - **Hydrate wins cross-session reuse** (it remembers what was built so the next
+>   session reuses it). **Hydrate + Ponytail is the strongest setup** — the two are
+>   complementary, not competing.
+> - Full grid: [**BENCHMARKS.md**](BENCHMARKS.md).
+
 Two Claude Code slash commands that apply Hydrate's concision discipline to a
 single session, without running an orchestration fleet. Unlike the rest of this
 repository, the files in this directory are MIT-licensed (see
