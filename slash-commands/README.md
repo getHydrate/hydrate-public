@@ -1,18 +1,18 @@
 # Hydrate YAGNI slash commands (MIT)
 
 > **TL;DR**
-> - Two MIT-licensed Claude Code slash commands — `/hydrate-yagni` (lean build) and
->   `/hydrate-yagni-spec` (lean spec) — lifted verbatim from Hydrate's orchestrator.
-> - **Inspired by [Ponytail](https://github.com/DietrichGebert/ponytail).** Hydrate
->   ran Ponytail's own benchmark and reproduced it: its **safety** result holds
->   exactly (a naive one-liner prompt drops to 94.4% safe; the guarded directive
->   stays 100%), and **backend** code is a tie.
-> - **Ponytail wins frontend line count** — a deliberate trade; Hydrate keeps
+> - Two MIT-licensed Claude Code slash commands: `/hydrate-yagni` (lean build) and
+>   `/hydrate-yagni-spec` (lean spec), lifted verbatim from Hydrate's orchestrator.
+> - Inspired by [Ponytail](https://github.com/DietrichGebert/ponytail). Hydrate ran
+>   Ponytail's own benchmark and reproduced it: its safety result holds exactly (a
+>   naive one-liner prompt drops to 94.4% safe, the guarded directive stays 100%), and
+>   backend code is a tie.
+> - Ponytail wins frontend line count. That is a deliberate trade: Hydrate keeps
 >   higher-fidelity UI instead of golfing it away.
-> - **Hydrate wins cross-session reuse** (it remembers what was built so the next
->   session reuses it). **Hydrate + Ponytail is the strongest setup** — the two are
+> - Hydrate wins cross-session reuse, because it remembers what was built so the next
+>   session reuses it. Hydrate + Ponytail is the strongest setup. The two are
 >   complementary, not competing.
-> - Full grid: [**BENCHMARKS.md**](BENCHMARKS.md).
+> - Full grid: [BENCHMARKS.md](BENCHMARKS.md).
 
 Two Claude Code slash commands that apply Hydrate's concision discipline to a
 single session, without running an orchestration fleet. Unlike the rest of this
@@ -39,46 +39,45 @@ it is not, so they work standalone.
 The idea for these commands, and the task the benchmark uses, comes from Better
 Stack's video [*This Claude Code Plugin Writes 94% Less Code
 (ponytail)*](https://www.youtube.com/watch?v=2xuFcmUAQUc). It demonstrates
-**ponytail**, a Claude Code plugin that enforces a concision discipline so the
+ponytail, a Claude Code plugin that enforces a concision discipline so the
 model writes far less code for the same result. That video gave us two things: the
 weather-app prompt we benchmark with, and the idea of pulling the same concision
-discipline out of Hydrate's orchestrator and into a single, installable directive.
+discipline out of Hydrate's orchestrator into a single, installable directive.
 
-These commands are our take on that idea. The difference is provenance: ponytail is
+These commands are our take on that idea. The difference is provenance. Ponytail is
 a purpose-built plugin, whereas our directives are the *exact* text Hydrate's
 orchestration engine already injects into its own worker agents (see below). The
 weather-app benchmark runs ponytail as a head-to-head reference, and it and our
 directive land at the same cost and output size.
 
-Since then, Hydrate has gone further and **run ponytail's own agentic benchmark**
-end to end — its harness, its scorers — and reproduced its published results:
-ponytail's safety finding holds exactly, and on backend code a single concision
-directive ties the plugin. Ponytail wins on frontend line count (a deliberate
-trade Hydrate makes for higher-fidelity UI), and on a benchmark Hydrate built for
-*cross-session* reuse, Hydrate — and Hydrate + ponytail together — win on the axis
-ponytail does not target. The full, honest comparison, including where Hydrate
-loses, is in [**BENCHMARKS.md**](BENCHMARKS.md).
+Since then, Hydrate has gone further and run ponytail's own agentic benchmark
+end to end, on its harness and its scorers, and reproduced its published results.
+Ponytail's safety finding holds exactly, and on backend code a single concision
+directive ties the plugin. Ponytail wins on frontend line count, a deliberate
+trade Hydrate makes for higher-fidelity UI, and on a benchmark Hydrate built for
+cross-session reuse, Hydrate (and Hydrate + ponytail together) win on the axis
+ponytail does not target. The full comparison, including where Hydrate loses, is in
+[BENCHMARKS.md](BENCHMARKS.md).
 
 ## Where these directives come from
 
 These are not prompts written for a blog post. They are the exact directives
-**Hydrate's orchestration engine injects into its own worker agents**, lifted out
+Hydrate's orchestration engine injects into its own worker agents, lifted out
 verbatim so a single session can use them without running a fleet.
 
-- The **build** directive is the one Hydrate gives its **develop-mode
-  implementer** — the agent that writes code.
-- The **spec** directive is the one Hydrate's **design-mode critic** scores a spec
-  against.
+- The build directive is the one Hydrate gives its develop-mode implementer, the
+  agent that writes code.
+- The spec directive is the one Hydrate's design-mode critic scores a spec against.
 
 They are subtly, deliberately different. Running the orchestrator across many real
-tasks showed that building and specifying need different emphases — in one place
-the opposite emphasis — so the two directives diverged by experience rather than
-by theory. The section below explains exactly how.
+tasks showed that building and specifying need different emphases, in one place the
+opposite emphasis, so the two directives diverged by experience rather than by
+theory. The section below explains exactly how.
 
 ## Why we call it "YAGNI" (and how our definition differs)
 
-"YAGNI" — *You Aren't Gonna Need It* — is a familiar shorthand for "don't build
-what the task doesn't need", so we use the name. But these directives are **not**
+"YAGNI", short for *You Aren't Gonna Need It*, is a familiar shorthand for "don't
+build what the task doesn't need", so we use the name. But these directives are not
 the textbook principle. We define our own operational contract, because naive
 YAGNI fails in two ways that matter, and the contract is written to get the same
 logical result (lean, correct output) without either failure.
@@ -88,30 +87,30 @@ logical result (lean, correct output) without either failure.
 The implementer directive optimises one thing: write less code. A spec directive
 has to balance two axes that pull against each other:
 
-1. **Prose verbosity** — cut words that don't change implementation, verification
+1. **Prose verbosity.** Cut words that don't change implementation, verification
    or operator behaviour. This pulls toward shorter.
-2. **Scope / over-specification** — don't mandate seams, abstractions, config or
+2. **Scope and over-specification.** Don't mandate seams, abstractions, config or
    extensibility the requirement doesn't evidence. This also pulls toward less.
 
-…but with a guardrail that points the **opposite way** from code YAGNI, and this
-is the part you can't get wrong:
+There is a guardrail that points the opposite way from code YAGNI, and this is the
+part you can't get wrong:
 
-- **Implementer YAGNI:** "build only what's needed — but DO build any seam the
-  brief mandates."
-- **Spec YAGNI:** "specify only what's needed — but DO commit the
+- **Implementer YAGNI:** build only what's needed, but do build any seam the
+  brief mandates.
+- **Spec YAGNI:** specify only what's needed, but do commit the
   expensive-to-change boundary decisions now (contracts, data model, protocol,
   state ownership, lifecycle, naming, compatibility), because under-specifying a
-  costly-to-retrofit boundary is the expensive mistake."
+  costly-to-retrofit boundary is the expensive mistake.
 
 A naive "make the spec shorter" directive would violate that by encouraging
 under-specification of contracts. So a spec YAGNI is "cut prose and speculative
-scope, but pin the load-bearing boundary decisions" — not "specify less".
+scope, but pin the load-bearing boundary decisions", not "specify less".
 
 The build directive carries its own version of the same guard: concision never
 overrides correctness. It keeps every necessary error check and edge-case guard
 even when that adds lines, and it never drops a guard to shorten the code. That is
-the second way naive YAGNI fails — trimming real correctness in the name of
-brevity — and the directive is written to refuse it.
+the second way naive YAGNI fails, trimming real correctness in the name of brevity,
+and the directive is written to refuse it.
 
 ## Install
 
@@ -150,7 +149,7 @@ A quick way to triage: score the task on five questions and step up only when on
 genuinely clears the bar.
 
 1. **Specification.** Is the brief unambiguous and the pattern known? If not, spec first.
-2. **Cost of being wrong.** Throwaway, or production / security / data-loss?
+2. **Cost of being wrong.** Throwaway, or production, security, data-loss?
 3. **Verification.** Can a cheap check confirm it, or does it need real integration testing?
 4. **Design space.** One obvious approach, or several competing ones worth converging?
 5. **Scope.** A single file, or many files and packages?
@@ -162,14 +161,14 @@ former, which is the whole point: do not pay fleet prices for a one-file build.
 ## Benchmarks
 
 There are two benchmarks here, measuring two different things, plus the full grid
-in [**BENCHMARKS.md**](BENCHMARKS.md).
+in [BENCHMARKS.md](BENCHMARKS.md).
 
 ### 1. Reproducing Ponytail's agentic benchmark
 
 Hydrate ran [Ponytail's](https://github.com/DietrichGebert/ponytail) own agentic
-benchmark — its harness, its scorers, the `/hydrate-yagni` directive added as one
-more arm — to check its published results first-hand before claiming anything. They
-reproduced. **All numbers below are on Claude Haiku** (Ponytail's primary benchmark
+benchmark, on its harness and its scorers, with the `/hydrate-yagni` directive added
+as one more arm, to check its published results first-hand before claiming anything.
+They reproduced. All numbers below are on Claude Haiku (Ponytail's primary benchmark
 model), so they are not directly comparable to the Opus weather-app figures further
 down.
 
@@ -181,19 +180,19 @@ down.
 
 - **Safety reproduced exactly.** A naive "follow YAGNI, prefer one-liners" prompt
   drops to 94.4% safe, failing on the same task and model Ponytail published.
-  Hydrate's guarded directive holds 100% — it never drops a guard or error check to
-  shorten code. This is Ponytail's core safety argument, and it holds.
-- **Backend code is a tie** — Ponytail and the Hydrate directive both land ~6% under
-  baseline.
-- **Ponytail wins frontend line count**, and that is a deliberate trade: Hydrate
+  Hydrate's guarded directive holds 100%, because it never drops a guard or error
+  check to shorten code. This is Ponytail's core safety argument, and it holds.
+- **Backend code is a tie.** Ponytail and the Hydrate directive both land about 6%
+  under baseline.
+- **Ponytail wins frontend line count**, and that is a deliberate trade. Hydrate
   holds higher-fidelity UI (interface design is its own step) rather than golf
   components away. Chasing the frontend number directly made the build *worse* in a
   test, so it was reverted. Full detail in [BENCHMARKS.md](BENCHMARKS.md).
 
-**Where Hydrate wins: cross-session reuse.** Ponytail makes a build lean; Hydrate
+**Where Hydrate wins: cross-session reuse.** Ponytail makes a build lean. Hydrate
 makes the *next* session reuse what the last one built instead of rebuilding it. A
 two-phase benchmark seeds a repo with Ponytail-built components, clears context, then
-asks a fresh agent for a feature that needs them — and scores whether it reuses them
+asks a fresh agent for a feature that needs them, and scores whether it reuses them
 (early pilot, 18 runs, Haiku):
 
 | Arm | Reuse rate | Avg new LOC |
@@ -202,36 +201,36 @@ asks a fresh agent for a feature that needs them — and scores whether it reuse
 | Hydrate | **1.00** | 247 |
 | **Hydrate + Ponytail** | **1.00** | **207** |
 
-Without memory a fresh agent rebuilds — one in three cold runs shipped a duplicate of
-a component the repo already had. With Hydrate it reused every time. **Hydrate +
-Ponytail is the strongest setup**: memory delivers the reuse guarantee, Ponytail keeps
-the new code lean. Ponytail alone cannot play this axis — it has no cross-session
-memory. Full method and caveats in [**BENCHMARKS.md**](BENCHMARKS.md).
+Without memory a fresh agent rebuilds: one in three cold runs shipped a duplicate of
+a component the repo already had. With Hydrate it reused every time. Hydrate +
+Ponytail is the strongest setup, because memory delivers the reuse guarantee and
+Ponytail keeps the new code lean. Ponytail alone cannot play this axis, as it has no
+cross-session memory. Full method and caveats in [BENCHMARKS.md](BENCHMARKS.md).
 
 ### 2. Single-shot concision: weather-bench
 
 A separate benchmark in [`benchmarks/weather-bench`](benchmarks/weather-bench) builds
 one fixed task (a weather dashboard app) many different ways and scores each against
-the same 12-point functional checklist. **Every run used Claude Opus 4.8**, and every
+the same 12-point functional checklist. Every run used Claude Opus 4.8, and every
 build scored 12/12, so the cost differences below are cost at equal quality.
 
 | How the task was run | Cost | Lines of code |
 |----------------------|-----:|--------------:|
-| YAGNI single shot (the `/hydrate-yagni` tier) | **$0.34 – $0.44** | ~217 – 297 |
+| YAGNI single shot (the `/hydrate-yagni` tier) | **$0.34 to $0.44** | ~217 to 297 |
 | Ponytail plugin (Better Stack, reference) | **$0.34** | 253 |
-| Plain single shot, no concision directive | $0.72 – $1.53 | ~736 – 844 |
-| Full multi-agent orchestration | $7 – $11 | varies |
+| Plain single shot, no concision directive | $0.72 to $1.53 | ~736 to 844 |
+| Full multi-agent orchestration | $7 to $11 | varies |
 
 - **The YAGNI directive alone cut a build by about 78%** in cost (from $1.53 to
-  $0.34), with the model, prompt and environment all held constant — only the
+  $0.34), with the model, prompt and environment all held constant. Only the
   directive changed.
 - **The shipped `/hydrate-yagni` command reproduces it**: about $0.43 at 217 lines
   and 12/12, the smallest output in the whole benchmark.
-- The full span from a lean shot to an orchestration is roughly **20x at the same
-  rubric score**, which is why matching the tier to the task matters.
+- The full span from a lean shot to an orchestration is roughly 20x at the same
+  rubric score, which is why matching the tier to the task matters.
 
-Caveat: most weather-bench figures are single runs; the 78% headline is the mean of
-three. It isolates *concision* on a greenfield build, not memory. Full method, the
+Caveat: most weather-bench figures are single runs, and the 78% headline is the mean
+of three. It isolates *concision* on a greenfield build, not memory. Full method, the
 verbatim prompt, the per-arm table and the headless-vs-interactive analysis are in the
 [benchmark README](benchmarks/weather-bench).
 
