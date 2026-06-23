@@ -1,8 +1,15 @@
 Hydrate — End-User Licence Agreement (placeholder)
 ===================================================
 
+SCOPE: This licence governs every file in this repository EXCEPT
+those under the `slash-commands/` directory, which are licensed
+separately under the MIT Licence. See `slash-commands/LICENSE`.
+
 <!--
 TODO Seamus: drop in the canonical EULA text before the public flip.
+KEEP the SCOPE carve-out above (or an equivalent) in the final EULA —
+the slash-commands/ directory is MIT and must stay excluded from the
+proprietary terms.
 
 The public-repo distribution is the binary-only path; this LICENSE
 file should be the end-user licence governing the released binaries,

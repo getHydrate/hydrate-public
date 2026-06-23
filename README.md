@@ -402,6 +402,8 @@ is available on request. See
   multi-agent orchestration engine, with worked examples.
 - [`docs/OKF_COMPATIBILITY.md`](docs/OKF_COMPATIBILITY.md): exporting memory as
   Open Knowledge Format bundles.
+- [`slash-commands/`](slash-commands/): two MIT-licensed Claude Code slash
+  commands (`/hydrate-yagni`, `/hydrate-yagni-spec`) you can download and reuse.
 
 Homepage, benchmarks and comparisons: [gethydrate.dev](https://gethydrate.dev).
 
@@ -419,4 +421,6 @@ URL with your system info and the diagnostic output.
 ## Licence
 
 See [`LICENSE`](LICENSE). Binaries are distributed under the Hydrate end-user
-licence agreement shipped inside each release tarball.
+licence agreement shipped inside each release tarball. The one exception is the
+[`slash-commands/`](slash-commands/) directory, which is MIT-licensed (see
+[`slash-commands/LICENSE`](slash-commands/LICENSE)).
