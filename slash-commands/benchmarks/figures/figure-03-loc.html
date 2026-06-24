@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- Render: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless
+     --force-device-scale-factor=2 --window-size=1200,675 --screenshot=figure-03-loc.png figure-03-loc.html -->
+<html lang="en"><head><meta charset="utf-8"><style>
+  :root{--bg:#fbfcfd;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --hydrate:#0d9488;--ponytail:#475569;--baseline:#cbd5e1;--held:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:48px 64px;display:flex;flex-direction:column}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.4px}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .sub{font-size:15px;color:var(--muted);margin-bottom:8px}
+  .legend{display:flex;gap:22px;font-size:13.5px;color:var(--muted);margin-bottom:18px}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .sw{width:13px;height:13px;border-radius:3px;display:inline-block}
+  .chart{flex:1;display:flex;gap:120px;justify-content:center;align-items:flex-end;
+    padding:0 20px;border-bottom:2px solid var(--line)}
+  .group{display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end}
+  .bars{display:flex;gap:20px;align-items:flex-end;height:100%}
+  .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+  .bar{width:76px;border-radius:8px 8px 0 0;position:relative}
+  .v{position:absolute;top:-28px;left:0;right:0;text-align:center;font-size:19px;font-weight:800}
+  .glabel{margin-top:14px;font-size:17px;font-weight:700}
+  .gtag{font-size:13.5px;color:var(--muted);margin-top:2px}
+  .held-note{position:absolute;top:-74px;left:-14px;right:-14px;text-align:center;font-size:11.5px;
+    color:var(--held);font-weight:600;line-height:1.2}
+  .cap{margin-top:22px;font-size:15px;color:var(--ink)}
+</style></head><body>
+  <div class="wrap">
+    <header><h1>Backend: tied. Frontend: a deliberate trade.</h1><div class="mark">HYDRATE</div></header>
+    <div class="sub">median lines of code, Claude Haiku</div>
+    <div class="legend">
+      <span><i class="sw" style="background:var(--baseline)"></i>Baseline</span>
+      <span><i class="sw" style="background:var(--ponytail)"></i>Ponytail</span>
+      <span><i class="sw" style="background:var(--hydrate)"></i>Hydrate</span>
+    </div>
+    <div class="chart">
+      <div class="group">
+        <div class="bars">
+          <div class="col"><div class="bar" style="height:50px;background:var(--baseline)"><span class="v">34</span></div></div>
+          <div class="col"><div class="bar" style="height:47px;background:var(--ponytail)"><span class="v">32</span></div></div>
+          <div class="col"><div class="bar" style="height:47px;background:var(--hydrate)"><span class="v" style="color:var(--hydrate)">32</span></div></div>
+        </div>
+        <div class="glabel">Backend</div><div class="gtag">a tie, about 6% under baseline</div>
+      </div>
+      <div class="group">
+        <div class="bars">
+          <div class="col"><div class="bar" style="height:380px;background:var(--baseline)"><span class="v">256</span></div></div>
+          <div class="col"><div class="bar" style="height:138px;background:var(--ponytail)"><span class="v">93</span></div></div>
+          <div class="col"><div class="bar" style="height:380px;background:var(--hydrate)"><span class="held-note">held by design<br>higher-fidelity UI</span><span class="v" style="color:var(--held)">~256</span></div></div>
+        </div>
+        <div class="glabel">Frontend</div><div class="gtag">Ponytail leaner; Hydrate keeps the UI</div>
+      </div>
+    </div>
+    <div class="cap">On backend code the directive ties the plugin. On frontend Hydrate holds higher-fidelity components rather than golf them away.</div>
+  </div>
+</body></html>

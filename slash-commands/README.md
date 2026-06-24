@@ -163,6 +163,8 @@ former, which is the whole point: do not pay fleet prices for a one-file build.
 There are two benchmarks here, measuring two different things, plus the full grid
 in [BENCHMARKS.md](BENCHMARKS.md).
 
+![Benchmark scoreboard: safety reproduced (100%), backend a tie, frontend held by design, cross-session reuse 1.00, and Hydrate + Ponytail as the strongest combination](benchmarks/figures/figure-01-scoreboard.png)
+
 ### 1. Reproducing Ponytail's agentic benchmark
 
 Hydrate ran [Ponytail's](https://github.com/DietrichGebert/ponytail) own agentic
@@ -189,6 +191,10 @@ down.
   components away. Chasing the frontend number directly made the build *worse* in a
   test, so it was reverted. Full detail in [BENCHMARKS.md](BENCHMARKS.md).
 
+![Safety bars: baseline, Ponytail and Hydrate all 100% safe; the naive one-liner prompt drops to 94.4%](benchmarks/figures/figure-02-safety.png)
+
+![Median lines of code: backend tied at 32 across Ponytail and Hydrate; on frontend Ponytail is leaner while Hydrate holds higher-fidelity UI by design](benchmarks/figures/figure-03-loc.png)
+
 **Where Hydrate wins: cross-session reuse.** Ponytail makes a build lean. Hydrate
 makes the *next* session reuse what the last one built instead of rebuilding it. A
 two-phase benchmark seeds a repo with Ponytail-built components, clears context, then
@@ -206,6 +212,10 @@ a component the repo already had. With Hydrate it reused every time. Hydrate +
 Ponytail is the strongest setup, because memory delivers the reuse guarantee and
 Ponytail keeps the new code lean. Ponytail alone cannot play this axis, as it has no
 cross-session memory. Full method and caveats in [BENCHMARKS.md](BENCHMARKS.md).
+
+![Cross-session reuse: after the context gap, a no-memory agent rebuilds a duplicate (reuse rate 0.67) while Hydrate and Hydrate + Ponytail reuse every time (1.00)](benchmarks/figures/figure-04-reuse.png)
+
+![Complementary layers: Ponytail governs concision within a build, Hydrate governs memory across builds, and together they give a reuse guarantee plus lean new code](benchmarks/figures/figure-05-layers.png)
 
 ### 2. Single-shot concision: weather-bench
 

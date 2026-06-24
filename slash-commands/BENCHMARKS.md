@@ -10,6 +10,8 @@ All numbers come from Ponytail's own agentic benchmark harness (`benchmarks/agen
 its scorers, and Anthropic subscription auth, plus a cross-session benchmark Hydrate
 built to measure the axis Ponytail does not target.
 
+![Benchmark scoreboard: safety reproduced (100%), backend a tie, frontend held by design, cross-session reuse 1.00, and Hydrate + Ponytail as the strongest combination](benchmarks/figures/figure-01-scoreboard.png)
+
 ## Results at a glance
 
 | Benchmark | Baseline | Ponytail | Hydrate | Hydrate + Ponytail | Notes |
@@ -43,6 +45,8 @@ land at a median of 32 lines against a 34-line baseline, at full correctness.
 
 Ponytail's safety claim and its backend concision both replicate. Hydrate endorses them.
 
+![Safety bars: baseline, Ponytail and Hydrate all 100% safe; the naive one-liner prompt drops to 94.4%](benchmarks/figures/figure-02-safety.png)
+
 ## 2. Where Ponytail wins, and why
 
 On frontend component tasks Ponytail wins clearly: a median of about 93 lines against a
@@ -64,6 +68,8 @@ no native equivalent the instruction pushed the agent to over-build. The change 
 reverted. The lesson is recorded rather than hidden. A one-paragraph directive does not
 out-golf a purpose-built concision tool on frontend work, and chasing the number degrades
 the product.
+
+![Median lines of code: backend tied at 32 across Ponytail and Hydrate; on frontend Ponytail is leaner while Hydrate holds higher-fidelity UI by design](benchmarks/figures/figure-03-loc.png)
 
 ## 3. The two tools measure different things
 
@@ -96,6 +102,8 @@ reuse rate of 1.00 against the cold baseline's 0.67.
 These figures are an early 18-run pilot. The direction is clear, and the absolute numbers
 will firm up with a larger run.
 
+![Cross-session reuse: after the context gap, a no-memory agent rebuilds a duplicate (reuse rate 0.67) while Hydrate and Hydrate + Ponytail reuse every time (1.00)](benchmarks/figures/figure-04-reuse.png)
+
 ## 5. Why Hydrate + Ponytail is the strongest setup
 
 The combined arm is not a compromise between the two. It takes the best of each. Hydrate's
@@ -113,6 +121,8 @@ sessions.
 Ponytail does everything it claims, and Hydrate has verified it. Hydrate wins on a
 different axis, memory across sessions, and the two together are stronger than either
 alone. Run both.
+
+![Complementary layers: Ponytail governs concision within a build, Hydrate governs memory across builds, and together they give a reuse guarantee plus lean new code](benchmarks/figures/figure-05-layers.png)
 
 ---
 

@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- Render: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless
+     --force-device-scale-factor=2 --window-size=1200,675 --screenshot=figure-05-layers.png figure-05-layers.html -->
+<html lang="en"><head><meta charset="utf-8"><style>
+  :root{--bg:#fbfcfd;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --hydrate:#0d9488;--ponytail:#475569;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:52px 64px;display:flex;flex-direction:column}
+  header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:30px}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.4px}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .stack{flex:1;display:flex;flex-direction:column;gap:18px;justify-content:center}
+  .band{border-radius:16px;padding:24px 30px;color:#fff;display:flex;align-items:center;gap:22px}
+  .band .icon{font-size:30px;opacity:.9}
+  .band b{font-size:21px;display:block;margin-bottom:3px}
+  .band span{font-size:15px;opacity:.92}
+  .pony{background:var(--ponytail)}
+  .hyd{background:var(--hydrate)}
+  .plus{text-align:center;font-size:26px;color:var(--muted);font-weight:700;margin:-4px 0}
+  .combined{background:linear-gradient(90deg,var(--hydrate),#0f766e);border:2px solid #0f766e;
+    border-radius:16px;padding:26px 30px;color:#fff;display:flex;align-items:center;justify-content:space-between}
+  .combined .lhs b{font-size:23px}
+  .ticks{display:flex;gap:26px;font-size:15px}
+  .ticks div{display:flex;align-items:center;gap:8px}
+  .tick{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.22);
+    display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+  .sub{margin-top:26px;font-size:16px;color:var(--ink);text-align:center}
+</style></head><body>
+  <div class="wrap">
+    <header><h1>Complementary, not competing</h1><div class="mark">HYDRATE</div></header>
+    <div class="stack">
+      <div class="band pony"><span class="icon">&#9660;</span><div><b>Ponytail</b><span>concision <i>within</i> a build: the leanest correct code, right now</span></div></div>
+      <div class="band hyd"><span class="icon">&#8635;</span><div><b>Hydrate</b><span>memory <i>across</i> builds: the next session reuses what the last one made</span></div></div>
+      <div class="plus">+</div>
+      <div class="combined">
+        <div class="lhs"><b>Hydrate + Ponytail</b></div>
+        <div class="ticks">
+          <div><span class="tick">&#10003;</span>reuse guarantee</div>
+          <div><span class="tick">&#10003;</span>lean new code</div>
+        </div>
+      </div>
+    </div>
+    <div class="sub">Ponytail makes a build lean. Hydrate makes the next session reuse it. Orthogonal layers that compound.</div>
+  </div>
+</body></html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Render: "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless
+     --force-device-scale-factor=2 --window-size=1200,675 --screenshot=figure-02-safety.png figure-02-safety.html -->
+<html lang="en"><head><meta charset="utf-8"><style>
+  :root{--bg:#fbfcfd;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;
+    --hydrate:#0d9488;--ponytail:#475569;--baseline:#cbd5e1;--trade:#94a3b8;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:48px 64px;display:flex;flex-direction:column}
+  header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+  h1{font-size:30px;font-weight:700;letter-spacing:-.4px}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .sub{font-size:15px;color:var(--muted);margin-bottom:28px}
+  .chart{flex:1;display:flex;align-items:flex-end;gap:56px;padding:0 40px 0 56px;
+    border-left:2px solid var(--line);border-bottom:2px solid var(--line);position:relative}
+  .axis{position:absolute;left:-44px;font-size:13px;color:var(--muted)}
+  .col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .bar{width:100%;max-width:150px;border-radius:8px 8px 0 0;position:relative}
+  .v{position:absolute;top:-30px;left:0;right:0;text-align:center;font-size:22px;font-weight:800}
+  .name{margin-top:14px;font-size:15px;font-weight:600;text-align:center;line-height:1.25}
+  .name small{display:block;color:var(--muted);font-weight:400;font-size:12.5px}
+  .callout{position:absolute;right:48px;bottom:170px;max-width:210px;font-size:13.5px;color:var(--trade);
+    border-left:3px solid var(--trade);padding-left:10px;line-height:1.35}
+  .cap{margin-top:22px;font-size:15px;color:var(--ink)}
+</style></head><body>
+  <div class="wrap">
+    <header><h1>Safety: reproduced exactly</h1><div class="mark">HYDRATE</div></header>
+    <div class="sub">% safe, 90 runs per arm, Claude Haiku, on Ponytail's own harness</div>
+    <div class="chart">
+      <div class="axis" style="bottom:-10px">90%</div>
+      <div class="axis" style="top:-10px">100%</div>
+      <div class="col"><div class="bar" style="height:380px;background:var(--baseline)"><span class="v">100%</span></div><div class="name">Baseline</div></div>
+      <div class="col"><div class="bar" style="height:380px;background:var(--ponytail)"><span class="v">100%</span></div><div class="name">Ponytail</div></div>
+      <div class="col"><div class="bar" style="height:380px;background:var(--hydrate)"><span class="v" style="color:var(--hydrate)">100%</span></div><div class="name">Hydrate<small>/hydrate-yagni</small></div></div>
+      <div class="col"><div class="bar" style="height:167px;background:var(--trade)"><span class="v" style="color:var(--trade)">94.4%</span></div><div class="name">Naive one-liner<small>"prefer one-liners"</small></div></div>
+    </div>
+    <div class="cap">Hydrate reproduced Ponytail's safety result exactly. The naive prompt drops a guard to shorten code and fails the same task and model Ponytail published, while the guarded directive never trades a correctness check for fewer lines.</div>
+  </div>
+</body></html>
