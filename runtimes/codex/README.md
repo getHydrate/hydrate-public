@@ -1,9 +1,10 @@
 # Codex + Hydrate: what your Codex sessions gain when they remember
 
-> **Status: scaffold — results pending a run.** This page has the method, the
-> task, the rubric and the protocol locked. The numbers in the tables are marked
-> `pending` and must not be cited until the run lands. We publish measured
-> figures only.
+> **Status: Benchmark A measured (2026-06-24); Benchmark B pending.** The
+> directive-portability result below is real — two live builds on Codex CLI
+> 0.141 / gpt-5.4, both scored 12/12, screenshots included. The cross-runtime
+> memory benchmark (B) is still marked `pending`; it wants the c8b harness, not
+> a laptop run. We publish measured figures only.
 
 [OpenAI Codex](https://developers.openai.com/codex) is one of the runtimes
 Hydrate plugs into. This page does not pit Hydrate against Codex — Hydrate runs
@@ -28,18 +29,40 @@ can do, and it is where Codex gains the most.
 
 Same task as [weather-bench](../../slash-commands/benchmarks/weather-bench/README.md), scored on the same
 [12-point rubric](rubric.md). One fixed prompt, built with and without the
-directive, on Codex's current default model. Because both arms are held to 12/12,
-any cost or line-count gap is concision, not quality. Lower is better.
+directive, on **Codex CLI 0.141.0 / gpt-5.4** (reasoning medium), single shots,
+Hydrate hooks off so only the directive varies. Both arms scored **12/12**, so
+the line-count and output-token gap is concision, not quality. Lower is better.
 
-| Arm | Directive? | Cost | LOC | Files | Score |
-|-----|:----------:|-----:|----:|:-----:|:-----:|
-| codex-vanilla | no | _pending_ | _pending_ | _pending_ | _pending_ |
-| codex-yagni `/hydrate-yagni` | yes | _pending_ | _pending_ | _pending_ | _pending_ |
+| Arm | Directive? | LOC | Files | Output tok | Score |
+|-----|:----------:|----:|:-----:|----------:|:-----:|
+| codex-vanilla | no | 809 | 3 | 10,545 | 12/12 |
+| codex-yagni `/hydrate-yagni` | yes | **623** | 3 | **9,395** | 12/12 |
 
-What this arm answers: the slash-command directives are runtime-portable. On
-Claude Code the directive cut a build ~78% in cost at the same 12/12 quality
-([weather-bench](../../slash-commands/benchmarks/weather-bench/README.md)). This arm checks whether the same
-discipline holds on Codex.
+**The directive cut emitted code 809 → 623 LOC (−23%) and output tokens 10,545
+→ 9,395 (−11%), at 12/12 parity.** On Claude Code the same directive cut a build
+~78% in cost ([weather-bench](../../slash-commands/benchmarks/weather-bench/README.md)); on Codex/gpt-5.4 it
+still lands a clean double-digit reduction, so the concision discipline ports.
+
+**Why no dollar figure?** This Codex account runs on ChatGPT-subscription auth,
+not an API key — there is no clean per-token cost to quote, so this page compares
+on LOC and output tokens, not USD. (Input tokens were actually *higher* for the
+yagni arm — 286k vs 224k — because the directive adds prompt and reasoning; the
+win is in the code it emits, which is the line a reader ships and maintains.)
+
+Both builds rendered live (Playwright); the only console error on each was the
+benign favicon 404, same as weather-bench. One honest difference: the vanilla
+arm shipped a geolocation-denial fallback to London, so it renders with no input;
+the leaner yagni arm implements `getCurrentPosition` but no denial fallback, so a
+no-geolocation context sits on "Detecting your location…" until a city is
+searched. That is not a rubric miss — geolocation is implemented — but it is the
+kind of robustness nicety a concision pass can trim, worth noting.
+
+<table>
+<tr>
+<td width="50%"><img src="results/vanilla-screenshot.png" alt="codex-vanilla weather app"><br><em>vanilla (no directive) — 809 LOC, geolocation→London fallback</em></td>
+<td width="50%"><img src="results/yagni-screenshot.png" alt="codex-yagni weather app"><br><em>yagni (<code>/hydrate-yagni</code>) — 623 LOC, rendered via city search</em></td>
+</tr>
+</table>
 
 ## Benchmark B — cross-runtime memory (the headline)
 
@@ -104,17 +127,22 @@ lower new-LOC is better.
 
 ## Honest caveats
 
-- **Nothing here is measured yet.** Every figure is `pending`. This page is the
-  method and the protocol, not a result.
-- **Different model from weather-bench.** Codex runs its own model; cross-page
-  comparisons are about the *uplift on each runtime*, not absolute cost between
-  runtimes.
-- **One task.** Like weather-bench, this is a single greenfield app for benchmark
-  A. The memory benchmarks (B) are the ones that actually exercise Codex's gain
-  from Hydrate; benchmark A is the portability check.
+- **n=1.** Benchmark A is a single build per arm. The −23% / −11% are one clean
+  pair, directionally consistent with weather-bench, not a distribution. Treat as
+  indicative.
+- **Different model from weather-bench.** Codex ran gpt-5.4; weather-bench ran
+  Claude Opus. Cross-page comparisons are about the *uplift on each runtime*, not
+  absolute size between runtimes.
+- **No USD.** ChatGPT-subscription auth means no per-token dollar cost; this page
+  reports LOC and output tokens instead.
+- **Benchmark B not yet run.** The cross-runtime hand-off, compact-survival and
+  reuse arms — the part that actually exercises Codex's gain from Hydrate — are
+  still pending. Benchmark A is only the portability check.
 
 ## Files here
 
 - [`prompt.txt`](prompt.txt): the verbatim task (identical to weather-bench).
 - [`rubric.md`](rubric.md): the 12-point checklist.
-- [`results/metrics.json`](results/metrics.json): the results scaffold to fill in.
+- [`figure-codex-scoreboard.html`](figure-codex-scoreboard.html) / `.png`: the scoreboard (A measured, B pending).
+- [`results/metrics.json`](results/metrics.json): full per-arm tokens, LOC and scores.
+- [`results/vanilla-screenshot.png`](results/) / [`yagni-screenshot.png`](results/): the two live builds.

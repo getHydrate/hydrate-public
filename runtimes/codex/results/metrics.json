@@ -1,30 +1,37 @@
 {
-  "status": "PENDING RUN — scaffold only. No arm below has been measured. Do not publish these numbers.",
-  "runtime": "OpenAI Codex CLI",
+  "status": "Benchmark A MEASURED 2026-06-24 (directive port). Benchmark B (cross-runtime memory) still pending.",
+  "runtime": "OpenAI Codex CLI 0.141.0",
+  "model": "gpt-5.4 (reasoning_effort=medium)",
+  "auth_mode": "ChatGPT subscription (no API key) — so there is NO clean per-token USD cost like the Claude weather-bench. Cost is reported in tokens, not dollars; the two pages are compared on LOC + output tokens, not USD.",
   "rubric_max": 12,
   "prompt": "verbatim natural (no format constraints) — identical to weather-bench",
-  "model_note": "Re-baseline on the latest Codex CLI + its current default model on the run day. Do NOT reuse the Claude Opus weather-bench figures. Label the exact Codex version + model here once run.",
-  "headless_flags_note": "Codex headless needs --dangerously-bypass-hook-trust + the sandbox flags on 0.139+. The 0.130 invocation silently degrades to baseline (hooks never fire) — which would fake a 'no uplift' result. Verify hooks fired before trusting any arm.",
+  "loc_method": "non-blank lines across all emitted files (both arms emitted index.html + styles.css + app.js)",
+  "hooks": "OFF — on 0.141 hooks need persisted trust or --dangerously-bypass-hook-trust to fire; not passed, so Hydrate hooks stayed dormant. Clean directive isolation (matches weather-bench arm A/B).",
   "benchmark_a_directive": {
-    "what": "Does the /hydrate-yagni concision directive port to Codex? Same weather task, single shot, with vs without the directive.",
+    "what": "Does the /hydrate-yagni concision directive port to Codex? Same weather task, single shot, with vs without the directive. Both held to 12/12 rubric parity, so the LOC/token delta is concision, not quality.",
+    "scoring": "12/12 each, source-read + live Playwright render. Vanilla rendered via geolocation->London fallback; yagni rendered via city search (London). Only console error both arms = benign favicon 404 (same as weather-bench).",
     "arms": {
-      "codex-vanilla": { "directive": false, "cost_usd": null, "loc": null, "files": null, "score": null, "note": "pending" },
-      "codex-yagni":   { "directive": true,  "cost_usd": null, "loc": null, "files": null, "score": null, "note": "pending" }
-    }
+      "codex-vanilla": {
+        "directive": false, "rubric": 12, "files": 3, "loc": 809,
+        "loc_breakdown": { "index.html": 108, "styles.css": 335, "app.js": 366 },
+        "input_tokens": 224021, "cached_input_tokens": 187008, "output_tokens": 10545, "reasoning_output_tokens": 1349,
+        "wall_seconds": 150,
+        "note": "Included a geolocation-denial fallback to London, so it renders with no user input."
+      },
+      "codex-yagni": {
+        "directive": true, "rubric": 12, "files": 3, "loc": 623,
+        "loc_breakdown": { "index.html": 95, "styles.css": 289, "app.js": 239 },
+        "input_tokens": 285977, "cached_input_tokens": 251904, "output_tokens": 9395, "reasoning_output_tokens": 1578,
+        "wall_seconds": 138,
+        "note": "Implements navigator.geolocation (getCurrentPosition) but no geo-DENIAL fallback, so a no-geolocation context stays on 'Detecting your location...' until a city is searched. Not a rubric miss (geolocation IS implemented); a robustness nicety the leaner build dropped. Renders fully on search or when geolocation is granted."
+      }
+    },
+    "headline": "Directive cut total LOC 809 -> 623 (-23%) and output tokens 10545 -> 9395 (-11%) at 12/12 parity. Note input tokens were HIGHER for the yagni arm (285977 vs 224021) — the directive adds prompt + reasoning; the win is in emitted code size, not input."
   },
   "benchmark_b_memory": {
-    "what": "Cross-runtime hand-off + cross-session reuse. The headline Codex story.",
-    "cross_runtime_handoff": {
-      "protocol": "Start the weather feature in Claude Code, /clear, resume in Codex. Codex's session-start read path injects Hydrate memory; Codex continues without re-explanation.",
-      "gate": "hydrate resume --project=<slug> must show the Claude session BEFORE the Codex reader runs (verify_capture). HYDRATE_PROJECT exported + verified.",
-      "result": null,
-      "note": "pending — this is the proven Claude<->Codex c8b leg (prior 1.00/0.90); re-run on latest infra for this page"
-    },
-    "compact_survival": {
-      "what": "Codex has no PreCompact event, so Hydrate IS its compact memory. Build, force a compact, verify recall survives.",
-      "result": null,
-      "note": "pending"
-    },
+    "what": "Cross-runtime hand-off + cross-session reuse + compact-survival. PENDING — wants the c8b harness on the Mini, not this laptop.",
+    "cross_runtime_handoff": { "result": null, "note": "pending — proven Claude<->Codex c8b leg (1.00/0.90); re-run on latest infra for this page" },
+    "compact_survival": { "result": null, "note": "pending" },
     "cross_session_reuse": {
       "arms": {
         "codex-cold":    { "memory": false, "reuse_rate": null, "avg_new_loc": null, "note": "pending" },
