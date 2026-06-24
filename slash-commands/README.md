@@ -14,6 +14,8 @@
 >   complementary, not competing.
 > - Full grid: [BENCHMARKS.md](BENCHMARKS.md).
 
+![TL;DR: two MIT slash commands (/hydrate-yagni and /hydrate-yagni-spec); Hydrate reproduced Ponytail's benchmark (safety 100%, backend a tie), holds higher-fidelity frontend UI by choice, and wins cross-session reuse; Hydrate + Ponytail is the strongest setup](benchmarks/figures/figure-00-tldr.png)
+
 Two Claude Code slash commands that apply Hydrate's concision discipline to a
 single session, without running an orchestration fleet. Unlike the rest of this
 repository, the files in this directory are MIT-licensed (see
