@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- Codex runtime scoreboard. SCAFFOLD — values are "pending"; do NOT render to
+     PNG until the run lands and the four tiles carry real numbers.
+     Render once populated:
+     chromium --headless --disable-gpu --force-device-scale-factor=2 \
+       --window-size=1200,675 --screenshot=figure-codex-scoreboard.png figure-codex-scoreboard.html
+     Scaffold copied from figure-01-scoreboard.html; shared palette. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --ponytail:#475569; --baseline:#cbd5e1;
+    --win:#16a34a; --tie:#d97706; --held:#2563eb; --pending:#94a3b8;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:28px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px}
+  h1 span{color:var(--hydrate)}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .tiles{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .tile{border:1px solid var(--line);border-radius:16px;padding:26px 24px;
+        display:flex;flex-direction:column;gap:12px;background:#fff;position:relative;overflow:hidden}
+  .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+  .tile h2{font-size:13px;font-weight:700;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+  .val{font-size:46px;font-weight:800;line-height:1;color:var(--accent)}
+  .desc{font-size:15px;color:var(--ink);line-height:1.4;margin-top:auto}
+  .pending{--accent:var(--pending)} .tie{--accent:var(--tie)}
+  .held{--accent:var(--held)} .win{--accent:var(--win)}
+  .pending .val{font-size:30px;letter-spacing:.5px}
+  .footer{border-radius:16px;padding:22px 28px;background:linear-gradient(90deg,var(--hydrate),#0f766e);
+          color:#fff;font-size:22px;font-weight:700;text-align:center;letter-spacing:.2px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Codex <span>&times; Hydrate</span> &mdash; what a session gains when it remembers</h1>
+        <div class="sub">SCAFFOLD &middot; numbers pending a run on the latest Codex CLI</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="tiles">
+      <div class="tile pending">
+        <h2>Directive: cost</h2>
+        <div class="val">pending</div>
+        <div class="desc">Does <code>/hydrate-yagni</code> cut cost on Codex's model at 12/12?</div>
+      </div>
+      <div class="tile pending">
+        <h2>Directive: LOC</h2>
+        <div class="val">pending</div>
+        <div class="desc">Lines saved with vs without the directive, same quality.</div>
+      </div>
+      <div class="tile pending">
+        <h2>Cross-runtime hand-off</h2>
+        <div class="val">pending</div>
+        <div class="desc">Start in Claude Code, resume in Codex. Recall across the boundary.</div>
+      </div>
+      <div class="tile pending">
+        <h2>Cross-session reuse</h2>
+        <div class="val">pending</div>
+        <div class="desc">Session 2 reuses what session 1 built, instead of rebuilding it.</div>
+      </div>
+    </div>
+    <div class="footer">Hydrate gives Codex a memory it shares with every other runtime</div>
+  </div>
+</body>
+</html>

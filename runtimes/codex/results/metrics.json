@@ -1,0 +1,35 @@
+{
+  "status": "PENDING RUN — scaffold only. No arm below has been measured. Do not publish these numbers.",
+  "runtime": "OpenAI Codex CLI",
+  "rubric_max": 12,
+  "prompt": "verbatim natural (no format constraints) — identical to weather-bench",
+  "model_note": "Re-baseline on the latest Codex CLI + its current default model on the run day. Do NOT reuse the Claude Opus weather-bench figures. Label the exact Codex version + model here once run.",
+  "headless_flags_note": "Codex headless needs --dangerously-bypass-hook-trust + the sandbox flags on 0.139+. The 0.130 invocation silently degrades to baseline (hooks never fire) — which would fake a 'no uplift' result. Verify hooks fired before trusting any arm.",
+  "benchmark_a_directive": {
+    "what": "Does the /hydrate-yagni concision directive port to Codex? Same weather task, single shot, with vs without the directive.",
+    "arms": {
+      "codex-vanilla": { "directive": false, "cost_usd": null, "loc": null, "files": null, "score": null, "note": "pending" },
+      "codex-yagni":   { "directive": true,  "cost_usd": null, "loc": null, "files": null, "score": null, "note": "pending" }
+    }
+  },
+  "benchmark_b_memory": {
+    "what": "Cross-runtime hand-off + cross-session reuse. The headline Codex story.",
+    "cross_runtime_handoff": {
+      "protocol": "Start the weather feature in Claude Code, /clear, resume in Codex. Codex's session-start read path injects Hydrate memory; Codex continues without re-explanation.",
+      "gate": "hydrate resume --project=<slug> must show the Claude session BEFORE the Codex reader runs (verify_capture). HYDRATE_PROJECT exported + verified.",
+      "result": null,
+      "note": "pending — this is the proven Claude<->Codex c8b leg (prior 1.00/0.90); re-run on latest infra for this page"
+    },
+    "compact_survival": {
+      "what": "Codex has no PreCompact event, so Hydrate IS its compact memory. Build, force a compact, verify recall survives.",
+      "result": null,
+      "note": "pending"
+    },
+    "cross_session_reuse": {
+      "arms": {
+        "codex-cold":    { "memory": false, "reuse_rate": null, "avg_new_loc": null, "note": "pending" },
+        "codex-hydrate": { "memory": true,  "reuse_rate": null, "avg_new_loc": null, "note": "pending" }
+      }
+    }
+  }
+}
