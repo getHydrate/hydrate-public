@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,675 \
+  --screenshot=fig-01-platform-layer.png fig-01-platform-layer.html -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --hydrate-deep:#0f766e;
+    --slate:#475569; --grey:#cbd5e1;
+    --win:#16a34a; --warn:#d97706; --info:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  body{overflow:hidden}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:24px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px;max-width:840px}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .stage{flex:1;display:flex;flex-direction:column;gap:20px}
+  .chips{display:flex;justify-content:space-between;gap:14px;padding:0 8px}
+  .chip{
+    width:190px;height:62px;border:1px solid var(--line);border-radius:16px;background:#fff;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:18px;font-weight:650;color:var(--slate);line-height:1.2;
+    box-shadow:0 10px 24px rgba(15,23,42,.04);
+  }
+  .links{height:48px;display:flex;justify-content:space-between;gap:14px;padding:0 103px}
+  .link{width:2px;height:48px;background:linear-gradient(180deg,var(--grey),rgba(13,148,136,.55))}
+  .daemon{
+    border-radius:28px;padding:28px 30px 26px;background:linear-gradient(135deg,var(--hydrate),var(--hydrate-deep));
+    color:#fff;display:flex;flex-direction:column;gap:22px;box-shadow:0 22px 44px rgba(13,148,136,.18);
+  }
+  .daemon-head{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .daemon-title{font-size:30px;font-weight:760;letter-spacing:-.4px}
+  .daemon-copy{font-size:15px;line-height:1.45;max-width:400px;color:rgba(255,255,255,.9)}
+  .caps{display:flex;gap:14px;flex-wrap:wrap}
+  .pill{
+    min-width:232px;height:64px;border-radius:18px;padding:0 20px;
+    background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:700;letter-spacing:.1px;
+  }
+  .footer{
+    border:1px solid var(--line);border-radius:16px;padding:18px 24px;background:#fff;
+    font-size:22px;font-weight:650;line-height:1.35;text-align:center;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>The platform layer for your coding agents.</h1>
+        <div class="sub">One local daemon gives every coding agent the things they lack on their own.</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="stage">
+      <div class="chips">
+        <div class="chip">Claude Code</div>
+        <div class="chip">OpenAI Codex</div>
+        <div class="chip">Cursor</div>
+        <div class="chip">Mistral Vibe</div>
+        <div class="chip">GitHub Copilot</div>
+      </div>
+      <div class="links">
+        <div class="link"></div>
+        <div class="link"></div>
+        <div class="link"></div>
+        <div class="link"></div>
+        <div class="link"></div>
+      </div>
+      <section class="daemon">
+        <div class="daemon-head">
+          <div class="daemon-title">Hydrate, one local daemon</div>
+          <div class="daemon-copy">One place to keep memory, coordinate runtimes, compress context and move facts across machines.</div>
+        </div>
+        <div class="caps">
+          <div class="pill">Memory</div>
+          <div class="pill">Orchestration</div>
+          <div class="pill">Token reduction</div>
+          <div class="pill">Peernet</div>
+        </div>
+      </section>
+      <div class="footer">One local daemon. No cloud. Five Go binaries under 10 MB. Nothing leaves your machine.</div>
+    </div>
+  </div>
+</body>
+</html>

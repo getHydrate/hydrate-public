@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,675 \
+  --screenshot=fig-04-orchestration-loop.png fig-04-orchestration-loop.html -->
+<html lang="en"><head><meta charset="utf-8"><style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --hydrate-deep:#0f766e; --slate:#475569;
+    --win:#16a34a; --warn:#d97706; --info:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  .wrap{height:100%;padding:52px 56px;display:flex;flex-direction:column;gap:30px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:32px;font-weight:700;letter-spacing:-.5px}
+  .sub{font-size:16px;color:var(--muted);margin-top:4px}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .pipeline{display:flex;align-items:stretch;gap:0;margin-top:6px}
+  .card{flex:1;border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px 16px;
+    display:flex;flex-direction:column;gap:8px;min-height:188px;position:relative}
+  .card::before{content:"";position:absolute;left:0;top:18px;bottom:18px;width:5px;border-radius:3px;background:var(--accent)}
+  .card h2{font-size:17px;font-weight:700;line-height:1.2;padding-left:6px}
+  .card p{font-size:14px;line-height:1.4;color:var(--muted);padding-left:6px;margin-top:auto}
+  .author{--accent:var(--hydrate)}
+  .critic{--accent:var(--info)}
+  .ledger{--accent:var(--warn)}
+  .test{--accent:var(--slate)}
+  .gate{border:none;background:linear-gradient(135deg,var(--hydrate),var(--hydrate-deep));color:#fff}
+  .gate::before{display:none}
+  .gate h2,.gate p{padding-left:0}
+  .gate p{color:rgba(255,255,255,.92)}
+  .arrow{display:flex;align-items:center;justify-content:center;width:46px;flex:none;
+    font-size:26px;color:var(--muted)}
+  .arrow.pass{color:var(--hydrate);font-weight:700}
+  .arrow small{position:absolute;margin-top:64px;font-size:11.5px;color:var(--hydrate);
+    font-weight:700;white-space:nowrap}
+  .loop{position:relative;height:70px;margin-top:4px}
+  .loopbar{position:absolute;left:120px;right:330px;top:30px;height:5px;background:var(--slate);border-radius:3px}
+  .loopbar::before{content:"";position:absolute;left:-1px;top:50%;width:13px;height:13px;
+    border-left:4px solid var(--slate);border-bottom:4px solid var(--slate);
+    transform:translateY(-50%) rotate(45deg)}
+  .loopup-l{position:absolute;left:118px;top:-4px;width:5px;height:34px;background:var(--slate);border-radius:3px}
+  .loopup-r{position:absolute;right:328px;top:-4px;width:5px;height:34px;background:var(--slate);border-radius:3px}
+  .looplabel{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:var(--bg);
+    padding:0 12px;font-size:14px;font-weight:700;color:var(--muted)}
+</style></head><body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Orchestration: quality through structured disagreement.</h1>
+        <div class="sub">A generator and a cross-family critic argue to convergence, with fail-closed gates.</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="pipeline">
+      <section class="card author"><h2>Author (Opus)</h2><p>drafts the artefact</p></section>
+      <div class="arrow">&rarr;</div>
+      <section class="card critic"><h2>Critic (Codex, different family)</h2><p>prompted to refute, not rubber-stamp</p></section>
+      <div class="arrow">&rarr;</div>
+      <section class="card ledger"><h2>Objection ledger</h2><p>severity, deduped, recurrence-counted</p></section>
+      <div class="arrow">&rarr;</div>
+      <section class="card test"><h2>Convergence test</h2><p>zero material objections and acceptance met, with a round cap</p></section>
+      <div class="arrow pass">&rarr;<small>clean pass</small></div>
+      <section class="card gate"><h2>Gate (fail-closed)</h2><p>ships on a clean pass, escalates to needs_human when stuck, never a false green</p></section>
+    </div>
+    <div class="loop">
+      <div class="loopup-l"></div>
+      <div class="loopbar"></div>
+      <div class="loopup-r"></div>
+      <div class="looplabel">loop back to the author while material objections remain</div>
+    </div>
+  </div>
+</body></html>

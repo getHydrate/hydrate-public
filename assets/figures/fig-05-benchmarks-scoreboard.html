@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,675 \
+  --screenshot=fig-05-benchmarks-scoreboard.png fig-05-benchmarks-scoreboard.html -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --hydrate-deep:#0f766e;
+    --slate:#475569; --grey:#cbd5e1;
+    --win:#16a34a; --warn:#d97706; --info:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  body{overflow:hidden}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:28px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px;max-width:900px}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .tiles{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .tile{
+    border:1px solid var(--line);border-radius:16px;padding:26px 24px;
+    display:flex;flex-direction:column;gap:12px;background:#fff;position:relative;overflow:hidden;
+  }
+  .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--accent)}
+  .tile h2{font-size:13px;font-weight:700;letter-spacing:1.2px;color:var(--muted);text-transform:uppercase}
+  .val{font-size:46px;font-weight:800;line-height:1;color:var(--accent)}
+  .desc{font-size:15px;color:var(--ink);line-height:1.4;margin-top:auto}
+  .hydrate{--accent:var(--hydrate)}
+  .info{--accent:var(--info)}
+  .win{--accent:var(--win)}
+  .warn{--accent:var(--warn)}
+  .footer{
+    border-radius:16px;padding:22px 28px;background:linear-gradient(90deg,var(--hydrate),#0f766e);
+    color:#fff;font-size:22px;font-weight:700;text-align:center;letter-spacing:.2px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Benchmarks: the axes that matter for a local memory layer.</h1>
+        <div class="sub">Token reduction, retrieval, compression and speed. Measured, not asserted.</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="tiles">
+      <div class="tile hydrate">
+        <h2>Token reduction</h2>
+        <div class="val">11.1%</div>
+        <div class="desc">fewer output tokens, 6.3% lower cost, at quality parity (lquery A/B, n=10)</div>
+      </div>
+      <div class="tile info">
+        <h2>Retrieval</h2>
+        <div class="val">R@10 0.86</div>
+        <div class="desc">0.95 on multi-session (LongMemEval, n=500)</div>
+      </div>
+      <div class="tile win">
+        <h2>Compression</h2>
+        <div class="val">99.2%</div>
+        <div class="desc">475.7M to 3.7M tokens (22,483 sessions)</div>
+      </div>
+      <div class="tile warn">
+        <h2>Speed and footprint</h2>
+        <div class="val">sub-10 ms</div>
+        <div class="desc">no reranker, no GPU, no model download</div>
+      </div>
+    </div>
+    <div class="footer">Local-first, pure Go, no telemetry. Audit the whole surface in an afternoon.</div>
+  </div>
+</body>
+</html>

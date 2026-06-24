@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,675 \
+  --screenshot=fig-03-works-with-channels.png fig-03-works-with-channels.html -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --hydrate-deep:#0f766e;
+    --slate:#475569; --grey:#cbd5e1;
+    --win:#16a34a; --warn:#d97706; --info:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  body{overflow:hidden}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:24px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px;max-width:860px}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .main{flex:1;display:grid;grid-template-columns:280px 1fr 280px;gap:24px;align-items:center}
+  .card{
+    border:1px solid var(--line);border-radius:28px;padding:28px 24px;background:#fff;
+    min-height:330px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;box-shadow:0 14px 32px rgba(15,23,42,.05);
+  }
+  .daemon{background:linear-gradient(145deg,var(--hydrate),var(--hydrate-deep));color:#fff;border:none}
+  .eyebrow{font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;opacity:.78}
+  .big{font-size:36px;font-weight:760;line-height:1.08;letter-spacing:-.5px;margin-top:12px}
+  .small{font-size:16px;line-height:1.45;margin-top:16px;max-width:210px;color:inherit}
+  .runtime .eyebrow,.runtime .small{color:var(--muted)}
+  .runtime .big{color:var(--slate)}
+  .channels{display:flex;flex-direction:column;gap:20px}
+  .channel{
+    height:112px;border:1px solid var(--line);border-radius:22px;background:#fff;
+    display:grid;grid-template-columns:198px 1fr 170px;align-items:center;padding:0 18px;gap:16px;
+  }
+  .name{font-size:24px;font-weight:760;letter-spacing:-.3px;color:var(--accent)}
+  .copy{font-size:18px;line-height:1.35;color:var(--ink)}
+  .arrow{
+    justify-self:end;width:150px;height:14px;border-radius:999px;background:var(--accent);
+    position:relative;
+  }
+  .arrow::after{
+    content:"";position:absolute;right:-2px;top:50%;width:18px;height:18px;
+    border-top:4px solid var(--accent);border-right:4px solid var(--accent);
+    transform:translateY(-50%) rotate(45deg);
+  }
+  .rightward{--accent:var(--hydrate)}
+  .leftward{--accent:var(--slate)}
+  .leftward .arrow{justify-self:start}
+  .leftward .arrow::after{right:auto;left:-2px;transform:translateY(-50%) rotate(225deg)}
+  .twoway{--accent:var(--info)}
+  .twoway .arrow{background:linear-gradient(90deg,var(--info),#60a5fa)}
+  .twoway .arrow::before{
+    content:"";position:absolute;left:-2px;top:50%;width:18px;height:18px;
+    border-top:4px solid var(--info);border-right:4px solid var(--info);
+    transform:translateY(-50%) rotate(225deg);
+  }
+  .twoway .arrow::after{border-top-color:#60a5fa;border-right-color:#60a5fa}
+  .badge{
+    border-radius:18px;padding:18px 22px;background:#eff6ff;border:1px solid #bfdbfe;
+    font-size:18px;line-height:1.4;color:#1e3a8a;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Works with: three channels, honestly tested.</h1>
+        <div class="sub">An inject hook, a capture hook and MCP, each delivery-tested per runtime.</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="main">
+      <section class="card daemon">
+        <div class="eyebrow">Local daemon</div>
+        <div class="big">Hydrate</div>
+        <div class="small">Memory, hooks and MCP, all in one local service.</div>
+      </section>
+      <section class="channels">
+        <div class="channel rightward">
+          <div class="name">Inject hook</div>
+          <div class="copy">pushes remembered context in at session start.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="channel leftward">
+          <div class="name">Capture hook</div>
+          <div class="copy">ingests the transcript when a session ends.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="channel twoway">
+          <div class="name">MCP</div>
+          <div class="copy">the model pulls memory on demand.</div>
+          <div class="arrow"></div>
+        </div>
+        <div class="badge">Three independent channels, delivery-tested per runtime. Supported means the model received the context, not that a config file was written.</div>
+      </section>
+      <section class="card runtime">
+        <div class="eyebrow">Runtime</div>
+        <div class="big">The model</div>
+        <div class="small">Any supported runtime can receive, send and pull through separate paths.</div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

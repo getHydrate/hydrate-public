@@ -13,6 +13,10 @@ gives Claude Code, OpenAI Codex, Cursor, Mistral Vibe and Copilot the things
 they lack on their own, and your work never leaves your machines unless you
 turn it on.
 
+<p align="center">
+  <img src="assets/figures/fig-01-platform-layer.png" alt="Hydrate as the platform layer: Claude Code, OpenAI Codex, Cursor, Mistral Vibe and GitHub Copilot all sit on one local Hydrate daemon providing memory, orchestration, token reduction and Peernet" width="820">
+</p>
+
 ## What you get
 
 - **Memory across sessions and runtimes.** Your agent forgets every `/clear`
@@ -40,6 +44,10 @@ island. Your agent re-asks what stack you use for the twelfth time this week.
 *With Hydrate:* your conventions, decisions and corrections are already there
 on the next turn, in Claude today and Codex tomorrow, and you pay fewer
 tokens to use them.
+
+<p align="center">
+  <img src="assets/figures/fig-02-why-without-with.png" alt="Without Hydrate: every /clear is amnesia and each runtime is its own island. With Hydrate: conventions, decisions and corrections are already there next turn, across runtimes, for fewer tokens" width="820">
+</p>
 
 Two things set Hydrate apart from other memory tools:
 
@@ -97,6 +105,10 @@ ingests the transcript when a session ends, and **MCP** lets the model pull
 memory on demand. They are independent, and we are honest about which ones
 actually reach the model on each host, because a hook that fires is not the
 same as one the host delivers.
+
+<p align="center">
+  <img src="assets/figures/fig-03-works-with-channels.png" alt="Hydrate reaches a runtime over three independent channels: an inject hook pushes context in at session start, a capture hook ingests the transcript at session end, and MCP lets the model pull memory on demand, each delivery-tested per runtime" width="820">
+</p>
 
 | Runtime | Auto-recall (inject) | Capture | MCP recall | Status |
 |---|:--:|:--:|:--:|---|
@@ -184,6 +196,10 @@ a human rather than ship a false pass. The local `hydrate-server` daemon
 drives it as a pure, resumable state machine with all state in SQLite, and it
 is exposed as MCP tools (`design_*`, `develop_*`), so any connected runtime
 can drive it.
+
+<p align="center">
+  <img src="assets/figures/fig-04-orchestration-loop.png" alt="The orchestration loop: an Author (Opus) drafts, a cross-family Critic (Codex) refutes, objections are tracked in a ledger, a convergence test checks for zero material objections and met acceptance, the loop returns to the author while objections remain, and a fail-closed gate ships on a clean pass or escalates to needs_human" width="820">
+</p>
 
 | Mode | Artefact | Pipeline | Terminal gate |
 |---|---|---|---|
@@ -307,6 +323,10 @@ your settings.
 
 We benchmark on the axes that matter for a local memory layer, and we are
 specific about what each number measures.
+
+<p align="center">
+  <img src="assets/figures/fig-05-benchmarks-scoreboard.png" alt="Benchmark scoreboard: 11.1% fewer output tokens at quality parity, retrieval R@10 of 0.86 (0.95 multi-session), 99.2% compression, and sub-10ms retrieval with no reranker, GPU or model download" width="820">
+</p>
 
 | Benchmark | Result | What it measures |
 |---|---|---|

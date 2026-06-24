@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless --disable-gpu \
+  --hide-scrollbars --force-device-scale-factor=2 --window-size=1200,675 \
+  --screenshot=fig-02-why-without-with.png fig-02-why-without-with.html -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#fbfcfd; --ink:#0f172a; --muted:#64748b; --line:#e2e8f0;
+    --hydrate:#0d9488; --hydrate-deep:#0f766e;
+    --slate:#475569; --grey:#cbd5e1;
+    --win:#16a34a; --warn:#d97706; --info:#2563eb;
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:675px;background:var(--bg);color:var(--ink)}
+  body{overflow:hidden}
+  .wrap{height:100%;padding:56px 64px;display:flex;flex-direction:column;gap:28px}
+  header{display:flex;align-items:baseline;justify-content:space-between}
+  h1{font-size:34px;font-weight:700;letter-spacing:-.5px}
+  .sub{font-size:16px;color:var(--muted)}
+  .mark{font-size:15px;font-weight:600;color:var(--hydrate);letter-spacing:.5px}
+  .panels{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+  .panel{
+    border-radius:24px;padding:28px 28px 26px;border:1px solid var(--line);
+    display:flex;flex-direction:column;gap:22px;background:#fff;position:relative;overflow:hidden;
+  }
+  .panel::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--accent)}
+  .panel.left{--accent:var(--grey);background:linear-gradient(180deg,#ffffff,#f8fafc)}
+  .panel.right{--accent:var(--hydrate);background:linear-gradient(180deg,#ffffff,#f0fdfa)}
+  .heading{font-size:27px;font-weight:760;letter-spacing:-.3px}
+  .panel.left .heading{color:var(--slate)}
+  .panel.right .heading{color:var(--hydrate-deep)}
+  .stack{display:flex;flex-direction:column;gap:16px}
+  .item{
+    min-height:115px;border-radius:18px;padding:18px 20px;border:1px solid var(--line);
+    background:rgba(255,255,255,.88);display:flex;align-items:center;
+    font-size:29px;font-weight:680;line-height:1.18;letter-spacing:-.35px;
+  }
+  .panel.left .item{color:#334155}
+  .panel.right .item{color:#0f172a}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Why Hydrate.</h1>
+        <div class="sub">What changes when memory survives the session and crosses runtimes.</div>
+      </div>
+      <div class="mark">HYDRATE</div>
+    </header>
+    <div class="panels">
+      <section class="panel left">
+        <div class="heading">Without Hydrate</div>
+        <div class="stack">
+          <div class="item">every /clear is amnesia</div>
+          <div class="item">each runtime is its own island</div>
+          <div class="item">re-asks your stack for the twelfth time this week</div>
+        </div>
+      </section>
+      <section class="panel right">
+        <div class="heading">With Hydrate</div>
+        <div class="stack">
+          <div class="item">conventions, decisions and corrections already there next turn</div>
+          <div class="item">Claude today, Codex tomorrow, one shared store</div>
+          <div class="item">fewer tokens to use them (11.1% fewer output tokens)</div>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
