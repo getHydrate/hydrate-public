@@ -150,9 +150,10 @@ drop the binaries into `~/.local/bin/`.
 
 ### Windows
 
-Download `hydrate-v0.4.0-windows-amd64.zip` from
-[Releases](https://github.com/getHydrate/hydrate-public/releases/latest) and
-unzip into a directory on `PATH`. An MSI installer is on the roadmap.
+Download and run the signed `Hydrate.msi` from
+[Releases](https://github.com/getHydrate/hydrate-public/releases/latest). For a
+manual install instead, grab `hydrate-v0.11.0-windows-amd64.tar.gz`, extract it,
+and put the binaries on `PATH`.
 
 After install, run:
 
@@ -207,6 +208,8 @@ can drive it.
 | **Develop** | code patches | Implementer → Reviewer → Judge → Audit | human integrate gate, post-merge audit |
 | **Image** | generated images | Generator → Judge (design-judgement) | accept |
 | **Studio** | UX design, then build | Designer → approve or revise → implement | design approval, build accept |
+| **Book** | manuscript edits | Critic → Skeptic → Rewriter over a continuity ledger | per-chapter review-queue triage |
+| **Screenplay** | novel → screenplay | author blueprint → adapt → rewrite/verify → story convergence | author triage at each gate |
 
 Why it produces better work:
 
@@ -281,7 +284,8 @@ Inside Claude Code, Hydrate ships ten slash commands:
 - `/hydrate-project` pulls the current project's canon and facts.
 - `/hydrate-distill` captures, compresses and writes a handover before
   `/clear`.
-- `/hydrate-week` shows the last seven days of dream reports.
+- `/hydrate-dream-recall` shows recent dream reports: the contradictions and
+  cross-session patterns Hydrate surfaced while you were away.
 - `/hydrate-timeline` gives a chronological view of the project's sessions.
 - `/hydrate-dashboard` opens the local dashboard.
 - `/hydrate-peernet` activates Peernet for cross-agent messaging.
@@ -350,7 +354,7 @@ Full methodology and head-to-head comparisons are at
 The port is written to `~/.hydrate/server.port` on startup, or run `hydrate
 dashboard` to open it. Every pane streams updates live over SSE.
 
-The dashboard has eight pages, three of them with tabbed sub-sections:
+The dashboard has ten pages, three of them with tabbed sub-sections:
 
 - **Home.** A live cockpit: token usage, rollups, active projects and
   orchestrations.
@@ -360,6 +364,12 @@ The dashboard has eight pages, three of them with tabbed sub-sections:
   agent, save and load to localStorage, and optional `hydrate orchestrator
   set` lines so the layout is recallable from SQLite), and Customise env (an
   env-var script builder).
+- **Sprints.** Orchestration runs grouped into fixed two-week sprints, each run
+  opening to a live board of its units with per-unit diffs and fail-closed gate
+  chips.
+- **Editorial.** Review a book-editor or screenplay pass: proposed edits as a
+  professional diff, bulk and per-chapter accept or decline, and the
+  story-objection panel for a screenplay's convergence round.
 - **Fatigue.** Per-project distil and refresh cadence.
 - **Facts.** A force-directed graph of every learned fact, filtered by
   project, area, time or pinned state.

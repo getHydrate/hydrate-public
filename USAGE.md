@@ -79,14 +79,15 @@ than the automatic capture would produce.
 /hydrate-distill
 ```
 
-### `/hydrate-week` (about 1,500 tokens)
+### `/hydrate-dream-recall` (about 1,500 tokens)
 
 Pull the most recently consolidated context for the current project. Hydrate
-runs a periodic "dream" cycle that summarises recent activity into themes; this
-surfaces the latest of it.
+runs a periodic "dream" cycle that summarises recent activity into themes and
+flags contradictions across sessions; this surfaces the latest of it. (Formerly
+`/hydrate-week`.)
 
 ```
-/hydrate-week
+/hydrate-dream-recall
 ```
 
 ### `/hydrate-timeline` (about 400 tokens)

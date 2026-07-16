@@ -119,23 +119,23 @@ extract it, and copy `bin/*` into `~/.local/bin/`.
 
 ## Windows
 
-Each release publishes a Windows ZIP at
-[Releases](https://github.com/getHydrate/hydrate-public/releases/latest):
-
-- `hydrate-v0.4.0-windows-amd64.zip` (Intel / AMD)
-- `hydrate-v0.4.0-windows-arm64.zip` (Arm)
-
-Unzip into a directory on `%PATH%` (for example
-`%LOCALAPPDATA%\Hydrate\bin\`), then in PowerShell:
+The supported path is the signed **`Hydrate.msi`**, published on every release
+at [Releases](https://github.com/getHydrate/hydrate-public/releases/latest).
+Download and run it, then in PowerShell:
 
 ```powershell
 hydrate setup     # interactive first-run wizard
 hydrate doctor
 ```
 
-A signed MSI installer is on the roadmap; track
-[the MSI tracking issue](https://github.com/getHydrate/hydrate-public/issues)
-for status. Until then the ZIP is the supported path.
+For a manual install instead, each release also publishes platform tarballs:
+
+- `hydrate-v0.11.0-windows-amd64.tar.gz` (Intel / AMD)
+- `hydrate-v0.11.0-windows-arm64.tar.gz` (Arm)
+
+Extract with `tar -xzf` (built into Windows 10 and later) into a directory on
+`%PATH%` (for example `%LOCALAPPDATA%\Hydrate\bin\`), then run the same
+`hydrate setup` and `hydrate doctor`.
 
 WSL users can take either the Linux Homebrew or install-script
 path instead, which is recommended if you want tmux-based
