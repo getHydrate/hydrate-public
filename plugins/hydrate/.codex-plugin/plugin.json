@@ -1,0 +1,22 @@
+{
+  "name": "hydrate",
+  "version": "0.11.0",
+  "description": "Shared local memory for the coding agent.",
+  "homepage": "https://github.com/getHydrate/hydrate-public",
+  "repository": "https://github.com/getHydrate/hydrate-public",
+  "license": "MIT",
+  "keywords": ["memory", "context", "recall"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "hooks": "./hooks/hooks.json",
+  "interface": {
+    "displayName": "Hydrate",
+    "shortDescription": "Persistent local memory for ChatGPT + Codex.",
+    "longDescription": "Hydrate gives the agent a persistent memory layer that lives entirely on the local machine. On the agentic surfaces (Codex, Work, CLI, IDE) it wires lifecycle hooks: relevant facts, canon, and prior-session context are injected before each prompt (UserPromptSubmit / SessionStart) and the session is captured on completion (Stop) — zero user friction. Everywhere plugins run, the bundled MCP server exposes explicit tools (hydrate_recall, hydrate_save_fact, hydrate_session_resume, …) and a skill guides their use in Chat/Work. All storage is local (~/.hydrate/data.db); nothing leaves the machine.",
+    "developerName": "Hydrate",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/getHydrate/hydrate-public",
+    "screenshots": []
+  }
+}

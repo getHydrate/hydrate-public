@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "hydrate": {
+      "command": "${PLUGIN_ROOT}/bin/hydrate-launch",
+      "args": ["--mcp"],
+      "env": {}
+    }
+  }
+}

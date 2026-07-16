@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "${PLUGIN_ROOT}/bin/hydrate-launch codex-session-start", "timeout": 5 } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "${PLUGIN_ROOT}/bin/hydrate-launch codex-context", "timeout": 5 } ] }
+    ],
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "${PLUGIN_ROOT}/bin/hydrate-launch codex-capture", "timeout": 20 } ] }
+    ]
+  }
+}
