@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+# Hydrate plugin bootstrap launcher.
+#
+# Ensures the platform-matched Hydrate binaries are present under ${PLUGIN_DATA},
+# then execs the requested shim (passing the hook's stdin straight through) or the
+# MCP server. The plugin git artifact stays tiny — the ~40MB per-platform binaries
+# are fetched on first use from Hydrate's GitHub release, not committed.
+#
+# Usage (hooks.json): hydrate-launch <shim>     e.g.  hydrate-launch codex-context
+#        (.mcp.json): hydrate-launch --mcp
+#
+# Fail-open: a hook never blocks a prompt. If binaries aren't ready yet it installs
+# in the background and emits nothing this turn (empty context); the next turn works.
+#
+# Reused verbatim by the Codex plugin AND the Claude Code plugin — it keys the
+# ledger gate off the shim prefix (codex-* / claude-*), so one launcher serves
+# both hosts.
+set -uo pipefail
+
+VER="v0.11.0"
+REPO="getHydrate/hydrate-public"   # public distribution repo (hosts release tarballs)
+BIN_DIR="${PLUGIN_DATA:-$HOME/.hydrate/plugin}/bin"
+
+ensure() {
+  [ -x "$BIN_DIR/hydrate" ] && return 0
+  local os arch tmp url
+  os=$(uname -s | tr '[:upper:]' '[:lower:]')                 # darwin | linux
+  arch=$(uname -m); case "$arch" in aarch64|arm64) arch=arm64;; x86_64|amd64) arch=amd64;; esac
+  mkdir -p "$BIN_DIR"; tmp=$(mktemp -d)
+  url="https://github.com/${REPO}/releases/download/${VER}/hydrate-${VER}-${os}-${arch}.tar.gz"
+  if curl -fsSL "$url" -o "$tmp/h.tgz" && tar xzf "$tmp/h.tgz" -C "$tmp"; then
+    cp "$tmp"/bin/* "$BIN_DIR"/ 2>/dev/null || true
+    chmod +x "$BIN_DIR"/* 2>/dev/null || true
+  fi
+  rm -rf "$tmp"
+}
+
+# resolve_hydrate prefers a stable installed hydrate (on PATH / ~/.local/bin) over
+# the plugin cache, so the newest install drives the daemon lifecycle (spec §4.3
+# / R-CX-2). Falls back to the bundled copy.
+resolve_hydrate() {
+  local c
+  for c in "$HOME/.local/bin/hydrate" "$(command -v hydrate 2>/dev/null || true)" "$BIN_DIR/hydrate"; do
+    if [ -n "$c" ] && [ -x "$c" ]; then printf '%s' "$c"; return; fi
+  done
+  printf '%s' "$BIN_DIR/hydrate"
+}
+
+arg="${1:?shim name or --mcp required}"
+
+if [ "$arg" = "--mcp" ]; then
+  ensure                       # MCP stdio transport must block until the binary exists
+  exec "$BIN_DIR/hydrate-mcp"  # MCP is pull-only + idempotent; coexists safely (§Q-2), no ledger gate
+fi
+
+# hook path — fail-open, never block the prompt
+if [ ! -x "$BIN_DIR/$arg" ]; then
+  ( ensure ) >/dev/null 2>&1 &   # install in the background; emit nothing this turn
+  exit 0
+fi
+
+# Ledger gate (§4.2/§4.3): if a foreign owner (the direct installer, or the other
+# plugin) holds this runtime, defer — emit nothing so we don't double-fire. The
+# bundled hydrate exits 3 to mean "defer"; any other outcome fails open (proceed).
+# Gate with the BUNDLED hydrate (same release → the subcommand always exists).
+case "$arg" in
+  codex-*)  gate_rt=codex;       gate_owner=codex-plugin ;;
+  claude-*) gate_rt=claude-code; gate_owner=claude-plugin ;;
+  *)        gate_rt="";          gate_owner="" ;;
+esac
+if [ -n "$gate_rt" ] && [ -x "$BIN_DIR/hydrate" ]; then
+  "$BIN_DIR/hydrate" wiring plugin-gate "$gate_rt" "$gate_owner" >/dev/null 2>&1
+  [ $? -eq 3 ] && exit 0
+fi
+
+HYD=$(resolve_hydrate)
+HYDRATE_NO_BROWSER=1 "$HYD" server start >/dev/null 2>&1 || true   # ensure daemon (idempotent, §Q-2/R-CX-4); no browser pop on hook-triggered start
+exec "$BIN_DIR/$arg"

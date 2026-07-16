@@ -1,0 +1,16 @@
+{
+  "name": "hydrate",
+  "version": "0.11.0",
+  "description": "Shared local memory for Claude Code. Ambient inject + capture via lifecycle hooks, plus MCP memory tools. All storage is local (~/.hydrate/data.db).",
+  "author": {
+    "name": "Hydrate",
+    "url": "https://github.com/getHydrate/hydrate-public"
+  },
+  "homepage": "https://github.com/getHydrate/hydrate-public",
+  "repository": "https://github.com/getHydrate/hydrate-public",
+  "license": "MIT",
+  "keywords": ["memory", "context", "recall", "hooks"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
+}

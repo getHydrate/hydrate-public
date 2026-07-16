@@ -1,0 +1,17 @@
+{
+  "name": "hydrate",
+  "owner": {
+    "name": "Hydrate",
+    "url": "https://github.com/getHydrate/hydrate-public"
+  },
+  "metadata": {
+    "description": "Hydrate — shared local memory for Claude Code. Ambient inject + capture hooks and MCP memory tools; all storage local."
+  },
+  "plugins": [
+    {
+      "name": "hydrate",
+      "source": "./plugins/hydrate-claude",
+      "description": "Shared local memory for Claude Code — ambient inject + capture hooks and MCP memory tools."
+    }
+  ]
+}
