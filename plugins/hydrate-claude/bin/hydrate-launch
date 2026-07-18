@@ -17,7 +17,7 @@
 # both hosts.
 set -uo pipefail
 
-VER="v0.11.0"
+VER="v0.11.1"
 REPO="getHydrate/hydrate-public"   # public distribution repo (hosts release tarballs)
 BIN_DIR="${PLUGIN_DATA:-$HOME/.hydrate/plugin}/bin"
 

@@ -1,6 +1,6 @@
 {
   "name": "hydrate",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Shared local memory for Claude Code. Ambient inject + capture via lifecycle hooks, plus MCP memory tools. All storage is local (~/.hydrate/data.db).",
   "author": {
     "name": "Hydrate",
