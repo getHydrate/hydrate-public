@@ -1,6 +1,6 @@
 {
   "name": "hydrate",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "Shared local memory for the coding agent.",
   "homepage": "https://github.com/getHydrate/hydrate-public",
   "repository": "https://github.com/getHydrate/hydrate-public",
